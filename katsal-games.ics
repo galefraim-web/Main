@@ -1,0 +1,153 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Katsal//Games//HE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:קטסל ה - משחקי ליגה
+X-WR-TIMEZONE:Asia/Jerusalem
+BEGIN:VTIMEZONE
+TZID:Asia/Jerusalem
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+TZNAME:IDT
+DTSTART:19700327T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1FR
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0300
+TZOFFSETTO:+0200
+TZNAME:IST
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:katsal-heh-2026-11-10@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261110T170000
+DTEND;TZID=Asia/Jerusalem:20261110T190000
+SUMMARY:קטסל 🏀 משחק בית נגד מכבי קדימה צורן
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: מכבי קדימה צורן\nשעת משחק: 17:00\nאול
+ ם: ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2026-11-24@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261124T163000
+DTEND;TZID=Asia/Jerusalem:20261124T183000
+SUMMARY:קטסל 🏀 משחק חוץ נגד הפועל מ.ק פרדסיה 
+ תפוז
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: הפועל מ.ק פרדסיה תפוז\nשעת משחק: 1
+ 6:30
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2026-12-15@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261215T170000
+DTEND;TZID=Asia/Jerusalem:20261215T190000
+SUMMARY:קטסל 🏀 משחק בית נגד הפועל לב השרון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: הפועל לב השרון\nשעת משחק: 17:00\nאולם
+ : ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2026-12-29@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20261229T170000
+DTEND;TZID=Asia/Jerusalem:20261229T190000
+SUMMARY:קטסל 🏀 משחק חוץ נגד מ.ס אבן יהודה תות
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: מ.ס אבן יהודה תות\nשעת משחק: 17:00
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-01-12@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270112T170000
+DTEND;TZID=Asia/Jerusalem:20270112T190000
+SUMMARY:קטסל 🏀 משחק בית נגד הפועל לב/חוף השר
+ ון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: הפועל לב/חוף השרון\nשעת משחק: 17:00\n
+ אולם: ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-01-26@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270126T163000
+DTEND;TZID=Asia/Jerusalem:20270126T183000
+SUMMARY:קטסל 🏀 משחק חוץ נגד הפועל מ.ק פרדסיה 
+ רימון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: הפועל מ.ק פרדסיה רימון\nשעת משחק:
+  16:30
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-02-23@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270223T170000
+DTEND;TZID=Asia/Jerusalem:20270223T190000
+SUMMARY:קטסל 🏀 משחק חוץ נגד מכבי קדימה צורן
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: מכבי קדימה צורן\nשעת משחק: 17:00
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-03-09@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270309T170000
+DTEND;TZID=Asia/Jerusalem:20270309T190000
+SUMMARY:קטסל 🏀 משחק בית נגד הפועל מ.ק פרדסיה 
+ תפוז
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: הפועל מ.ק פרדסיה תפוז\nשעת משחק: 17:
+ 00\nאולם: ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-04-02@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270402T163000
+DTEND;TZID=Asia/Jerusalem:20270402T183000
+SUMMARY:קטסל 🏀 משחק חוץ נגד הפועל לב השרון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: הפועל לב השרון\nשעת משחק: 16:30
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-04-13@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270413T170000
+DTEND;TZID=Asia/Jerusalem:20270413T190000
+SUMMARY:קטסל 🏀 משחק בית נגד מ.ס אבן יהודה תות
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: מ.ס אבן יהודה תות\nשעת משחק: 17:00\nאו
+ לם: ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-05-21@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270521T163000
+DTEND;TZID=Asia/Jerusalem:20270521T183000
+SUMMARY:קטסל 🏀 משחק חוץ נגד הפועל לב/חוף השר
+ ון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n✈️ משחק 
+ חוץ\nנגד: הפועל לב/חוף השרון\nשעת משחק: 16:30
+END:VEVENT
+BEGIN:VEVENT
+UID:katsal-heh-2027-06-08@katsal
+DTSTAMP:20261007T000000Z
+DTSTART;TZID=Asia/Jerusalem:20270608T170000
+DTEND;TZID=Asia/Jerusalem:20270608T190000
+SUMMARY:קטסל 🏀 משחק בית נגד הפועל מ.ק פרדסיה 
+ רימון
+DESCRIPTION:ליגת קטסל ה' - קטסל ה אהוד\n🏠 משחק ב
+ ית\nנגד: הפועל מ.ק פרדסיה רימון\nשעת משחק: 1
+ 7:00\nאולם: ראשונים
+LOCATION:אולם ראשונים
+END:VEVENT
+END:VCALENDAR
