@@ -1,0 +1,549 @@
+<title>SuperApp Film Prompt Pack</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a production call-sheet. Sticky timeline rail on wide screens, one reading column of shot cards; type chips encode shot source. */
+:root{
+  --bg:#F2F3EF; --paper:#FFFFFF; --fg:#17201C; --muted:#5A6560; --line:#D6DBD5;
+  --green:#0C7A4E; --amber:#B86E00; --teal:#0A7586; --slate:#55606B; --red:#B3261E;
+  --green-soft:#E2F0E8; --amber-soft:#F7ECD9; --teal-soft:#DDEFF2; --slate-soft:#E7EAED; --red-soft:#F6E3E1;
+  --code:#F6F7F4;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101614; --paper:#161E1B; --fg:#E5ECE8; --muted:#97A39D; --line:#2A3531;
+  --green:#4FC38F; --amber:#E2A245; --teal:#4EC0D0; --slate:#A3AEB8; --red:#F08A80;
+  --green-soft:#16302A; --amber-soft:#33281A; --teal-soft:#132E33; --slate-soft:#242C33; --red-soft:#361E1C;
+  --code:#121917; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101614; --paper:#161E1B; --fg:#E5ECE8; --muted:#97A39D; --line:#2A3531;
+  --green:#4FC38F; --amber:#E2A245; --teal:#4EC0D0; --slate:#A3AEB8; --red:#F08A80;
+  --green-soft:#16302A; --amber-soft:#33281A; --teal-soft:#132E33; --slate-soft:#242C33; --red-soft:#361E1C;
+  --code:#121917; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.rail{display:none}}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;font-size:13px}
+.rail a{display:flex;gap:8px;color:var(--muted);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:10px}
+.rail a:hover,.rail a:focus-visible{color:var(--fg);border-left-color:var(--green)}
+.rail .tcs{font-family:var(--mono);font-size:11.5px;min-width:72px;font-variant-numeric:tabular-nums}
+.rail .grp{font-family:var(--display);font-weight:700;color:var(--fg);margin:18px 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+main{min-width:0}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,46px);font-weight:900;line-height:1.1;letter-spacing:-.01em}
+h1 .jp{display:block;font-size:.42em;font-weight:500;color:var(--muted);letter-spacing:.12em;margin-top:10px}
+h2{font-size:26px;font-weight:900;margin-top:56px;padding-top:20px;border-top:3px solid var(--fg);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+h2 .tc{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--muted)}
+h3{font-size:17px;font-weight:700;margin:28px 0 10px}
+p{margin:0 0 12px;max-width:72ch}
+.lede{font-size:17px;max-width:68ch;color:var(--fg)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip.live{background:var(--green-soft);color:var(--green)}
+.chip.screen{background:var(--amber-soft);color:var(--amber)}
+.chip.illus{background:var(--teal-soft);color:var(--teal)}
+.chip.gfx{background:var(--slate-soft);color:var(--slate)}
+.chip.wow{background:var(--fg);color:var(--bg)}
+.chip.verify{background:var(--red-soft);color:var(--red)}
+.legend span.d{font-size:13px;color:var(--muted)}
+.note{border-left:3px solid var(--teal);padding:10px 14px;background:var(--paper);margin:16px 0;max-width:80ch;font-size:14px}
+.note.warn{border-left-color:var(--red)}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:76ch}
+li{margin:3px 0}
+.pipeline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;margin:10px 0 18px}
+.pipeline span{padding:4px 10px;border:1.5px solid var(--fg)}
+.pipeline i{font-style:normal;color:var(--muted)}
+.pw{position:relative;margin:10px 0}
+pre{font-family:var(--mono);font-size:12.8px;line-height:1.6;background:var(--code);border:1px solid var(--line);padding:14px 14px 14px 14px;margin:0;white-space:pre-wrap;word-wrap:break-word;overflow-x:auto;color:var(--fg)}
+.pw pre{padding-right:78px}
+.copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;padding:4px 9px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer;border-radius:3px}
+.copy:hover{border-color:var(--fg)}
+.copy:focus-visible,.rail a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.copy.ok{background:var(--green);color:var(--bg);border-color:var(--green)}
+.toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:8px 0 0}
+.block-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin:14px 0 6px}
+@media (max-width:640px){.block-intro{grid-template-columns:minmax(0,1fr)}}
+.block-intro div{background:var(--paper);border:1px solid var(--line);padding:12px 14px;font-size:14px;min-width:0}
+.block-intro b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:4px}
+.shot{background:var(--paper);border:1px solid var(--line);margin:14px 0;padding:14px 16px}
+.shot header{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.shot .sid{font-family:var(--display);font-weight:900;font-size:18px}
+.shot .tc{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.shot h4{font-size:16px;font-weight:700;flex:1 1 200px}
+.shot dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13.5px}
+@media (max-width:520px){.shot dl{grid-template-columns:minmax(0,1fr)}.shot dt{margin-top:6px}}
+.shot dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.shot dd{margin:0;min-width:0}
+.jpq{font-family:var(--display);font-weight:500}
+.screenbox{border:1.5px dashed var(--amber);padding:10px 12px;margin:10px 0 0;font-size:14px;background:var(--amber-soft)}
+.screenbox b{color:var(--amber)}
+.tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.m{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.kf{background:var(--paper);border:1px solid var(--line);padding:14px 16px;margin:12px 0}
+.kf header{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.kf .sid{font-family:var(--display);font-weight:900;font-size:17px}
+.kf h4{font-size:15.5px}
+.kf .use{font-size:13px;color:var(--muted);margin:6px 0 0}
+.prio{font-family:var(--mono);font-size:11px;color:var(--red)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<nav class="rail" aria-label="Sections">
+  <div class="grp">Setup</div>
+  <a href="#setup"><span class="tcs">—</span>Workflow</a>
+  <a href="#global"><span class="tcs">—</span>Global prompts</a>
+  <a href="#cast"><span class="tcs">—</span>Cast</a>
+  <a href="#grammar"><span class="tcs">—</span>Visual grammar</a>
+  <div class="grp">Film · 180s</div>
+  <a href="#b1"><span class="tcs">0:00–0:30</span>Never still</a>
+  <a href="#b2"><span class="tcs">0:30–1:00</span>Project control</a>
+  <a href="#b3"><span class="tcs">1:00–1:30</span>Safety</a>
+  <a href="#b4"><span class="tcs">1:30–2:00</span>Labor · Equip.</a>
+  <a href="#b5"><span class="tcs">2:00–2:30</span>Resources · OI</a>
+  <a href="#b6"><span class="tcs">2:30–3:00</span>Decision · Close</a>
+  <div class="grp">Reference</div>
+  <a href="#keyframes"><span class="tcs">K01–K15</span>Keyframes</a>
+  <a href="#screens"><span class="tcs">—</span>Screen map</a>
+  <a href="#cut30"><span class="tcs">0:30</span>Social cut</a>
+</nav>
+
+<main>
+<div class="eyebrow">Higgsfield production prompts · v1 · based on the brief Omri approved</div>
+<h1>SuperApp: From Physical Reality to Digital Intelligence<span class="jp">フィジカルAIで、現場の今を経営の判断へ</span></h1>
+<div class="meta">
+  <span><b>180 s</b> · six 30 s blocks · 47 shots</span>
+  <span><b>16:9</b> · 4K · 24 fps (48 fps on slow-motion shots)</span>
+  <span><b>Market:</b> Japan &amp; APAC · EN narration, JP subtitles</span>
+  <span><b>Mix:</b> ~70% live action · ~20% real screens · ~10% Physical AI illustration</span>
+</div>
+<p class="lede">This keeps the look of the Tokyo workshop film: serious, epic camerawork, match cuts, a moment where time stops, and real Japanese site rituals played straight with some quiet humor. This time every scene shows a real construction problem and the actual SuperApp screen that addresses it. We follow one site manager through one day on one tower in Tokyo, and his decisions are always his own.</p>
+
+<div class="legend" role="list">
+  <span class="chip live" role="listitem">Live</span><span class="d">Generated photoreal footage</span>
+  <span class="chip screen" role="listitem">Screen</span><span class="d">Real SuperApp recording, comped in post</span>
+  <span class="chip illus" role="listitem">Illus</span><span class="d">Physical AI illustration layer</span>
+  <span class="chip gfx" role="listitem">GFX</span><span class="d">Titles and motion graphics in post</span>
+  <span class="chip verify" role="listitem">Verify</span><span class="d">Product accuracy gate item</span>
+</div>
+
+<h2 id="setup">How to generate this</h2>
+<ol>
+  <li><b>Build the cast first.</b> Generate K01 (Arai) and K02 (Mori), then create a Soul ID from each. Apply it to every shot they appear in.</li>
+  <li><b>Lock the look with five keyframes:</b> K01, K02, K06 (illustration style), K12 (illustrated tower) and K14 (closing hero). If these hold up, the rest of the film will too.</li>
+  <li><b>Generate image-to-video, one shot per prompt.</b> Use each shot's keyframe or the last frame of the previous shot as the start frame. Shots longer than 5 s (S03, S39) can be generated as two clips and cut on movement.</li>
+  <li><b>Paste in order:</b> global style prompt + shot prompt, then the negative prompt in its own field. The copy buttons can add the style prompt for you (toggle below).</li>
+  <li><b>Never generate UI, text, logos or kanji.</b> Devices are generated with a blank dark screen and corner tracking dots (Style C). Real SuperApp recordings, the Trusstor badge, signage, chapter cards and subtitles are all added in post.</li>
+  <li><b>Generate 2–3 takes per shot.</b> Choose on performance first (Arai's stillness, sincere rituals) and physics second.</li>
+</ol>
+<div class="note warn"><b>Tension in the brief, and how it's resolved:</b> section 5 of the brief says "avoid unrealistic holograms and overly futuristic effects", but you want futuristic Physical AI visuals. These prompts handle it by never putting holograms into the scene. The futuristic material is a separate, clearly illustrated linework layer (Style B), used for five beats only: SENSE, CONNECT, the crew map, the two kinds of machine signal, and UNDERSTAND. The real world stays real, the product stays real, and the illustration shows the Physical AI idea. Confirm this with Omri before generating.</div>
+
+<h2 id="global">Global prompts</h2>
+<label class="toggle"><input type="checkbox" id="incStyle" checked> Add the matching style prompt when copying a shot prompt</label>
+
+<h3>Style A · Live action <span class="chip live">Live</span></h3>
+<div class="pw"><pre id="styleA">Photorealistic cinematic live action, shot on ARRI Alexa 35 with anamorphic lenses, 24 fps, 4K, subtle film grain, natural skin and fabric texture, realistic physics and motion blur. Setting: a large, orderly high-rise construction site in central Tokyo with white perimeter panels, green scaffold mesh sheets, tower cranes and exposed concrete slabs. Japanese workers in authentic site workwear: white or yellow helmets with chin straps, full-body harnesses, tobi trousers, long-sleeve work jackets. Premium documentary realism, calm and credible, nothing exaggerated.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style B · Physical AI illustration layer <span class="chip illus">Illus</span></h3>
+<div class="pw"><pre id="styleB">Physical AI illustration layer over a darkened, slightly desaturated live-action plate. Fine luminous linework in white and teal-cyan, like a technical architectural ink drawing that draws itself in real time: thin contour outlines around people, machines and work zones, small concentric signal rings, dotted flow lines, isometric tick marks and a faint grid. Flat 2D graphic linework, precise and elegant, clearly an illustration. Not a 3D hologram, no glow bloom, no sci-fi HUD clutter, no text.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style C · Screen plate (append to any shot with a device)</h3>
+<div class="pw"><pre id="styleC">The device screen shows a flat, uniform dark-grey surface with four small white tracking dots at its corners: no interface, no text, ready for screen replacement. Natural reflections on the glass, realistic hands and finger contact.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Negative prompt (every shot)</h3>
+<div class="pw"><pre id="negative">cartoon, anime, video game look, plastic CGI look, 3D hologram, sci-fi HUD, neon glow, robots, autonomous machines operating on their own, futuristic vehicles, distorted faces, extra or missing fingers, changing character face or clothing, missing helmet, worker at height without harness, messy or dirty site, generated user interface, generated text, gibberish kanji, logos, watermarks, burned-in subtitles, oversaturated colors, excessive lens flare, stock footage look, slideshow transitions</pre><button class="copy" type="button">Copy</button></div>
+
+<h2 id="cast">Cast (Soul ID)</h2>
+<div class="shot">
+  <header><span class="sid">ARAI</span><h4>Site manager (所長): the calm still point of the film</h4></header>
+  <div class="pw"><pre>Japanese man, about 48, short black hair greying at the temples, clean-shaven, thin dark-rimmed glasses, calm attentive expression. White helmet with chin strap, light-grey zip work jacket, navy work trousers, black safety shoes, plain white armband. Carries a rugged tablet in a black grip case.</pre><button class="copy" type="button">Copy</button></div>
+  <dl><dt>Performance</dt><dd>Plays the same part the founder did in the workshop film: composed, observant, micro-expressions only. He reads, considers and decides. He is never surprised and never rushed.</dd></dl>
+</div>
+<div class="shot">
+  <header><span class="sid">MORI</span><h4>Foreman (職長): Arai's hands on the floor</h4></header>
+  <div class="pw"><pre>Japanese woman, about 30, hair tied back under a yellow helmet, focused and quick, full-body harness over a navy work jacket, grey tobi trousers, two-way radio on her chest strap.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<div class="shot">
+  <header><span class="sid">EXEC</span><h4>Headquarters executive (one shot)</h4></header>
+  <div class="pw"><pre>Japanese executive, about 60, silver hair, charcoal suit with no tie, standing in a glass corner office high above Marunouchi, Tokyo.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<p><b>Badge:</b> always generate it as "a small black rectangular badge clipped to the harness chest strap", then composite the real Trusstor badge in post.</p>
+
+<h2 id="grammar">Visual grammar</h2>
+<div class="pipeline"><span>SENSE</span><i>→</i><span>CONNECT</span><i>→</i><span>UNDERSTAND</span><i>→</i><span>EMPOWER</span></div>
+<ul>
+  <li><b>The pipeline builds up across the film</b> as a small GFX mark in the lower left: SENSE lights at S06, CONNECT at S09, UNDERSTAND at S39 and EMPOWER at S42. Each chapter card shows which stages that chapter uses.</li>
+  <li><b>Illustration rules:</b> solid lines mean machine telemetry, dotted rings mean tracked assets and badges, dashed outlines mean zones, and amber means an event. Use one palette, white and teal. The layer only ever draws over a darkened live plate, or over charcoal when we are "inside" the data.</li>
+  <li><b>Four wow moments:</b> S03 the still point (Arai stays still while the day time-lapses around him), S06 SENSE (time slows and the site draws itself), S39 into the picture (we push through the monitor into the illustrated tower), and S46 「ヨシ!」 at dusk.</li>
+  <li><b>Callbacks to the workshop film:</b> the kigumi joinery click (S09), the morning calisthenics (S05, real people only this time) and pointing-and-calling (S46).</li>
+  <li><b>Chapter cards</b> (EN/JP, in post) use the brief's six key messages, placed at 0:30, 0:55, 1:30, 1:50, 2:15 and 2:40.</li>
+  <li><b>Timing:</b> the brief's storyboard is kept, with chapter boundaries moved by 5 s or less so the film splits into six even 30 s blocks.</li>
+</ul>
+
+<!-- ============ BLOCK 1 ============ -->
+<h2 id="b1">Block 1 · A site that never stands still <span class="tc">0:00–0:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Opening (0–15 s) + SENSE (15–30 s). One real project, constantly changing. Physical signals become visible.</div>
+  <div><b>Narration (EN)</b>"On a construction site, nothing stands still. People, equipment and priorities change throughout the day. How can management keep up with the reality on the ground? SuperApp connects physical construction activity with digital project information, creating a clearer picture of what is happening as conditions change."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S01</span><span class="tc">0:00–0:04</span><span class="chip live">Live</span><h4>Blue hour</h4></header>
+<div class="pw"><pre data-style="A">Pre-dawn blue hour over central Tokyo. A drone descends slowly toward a 30-storey concrete tower under construction with three tower cranes and red aviation lights; site floodlights switch on one by one. Tokyo Skytree softly lit on the distant skyline, light mist. Slow descending forward glide, 24mm, deep focus.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Sound</dt><dd>City hum, a distant crane horn, a soft taiko heartbeat under low strings.</dd><dt>VO</dt><dd>From 0:02, "On a construction site, nothing stands still."</dd><dt>Keyframe</dt><dd>K03</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S02</span><span class="tc">0:04–0:07</span><span class="chip live">Live</span><h4>The paper plan</h4></header>
+<div class="pw"><pre data-style="A">Extreme close-up inside a prefab site office at dawn: a printed construction schedule chart pinned to a whiteboard with red magnets, covered in handwritten marker corrections. A faint draft makes the paper edge flutter. Slow rack focus from a magnet to the fluttering edge. Cool window light, warm desk lamp.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Post</dt><dd>The schedule's text and bars are added in post, kept soft. This is the "static plan" that the rest of the film moves away from.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S03</span><span class="tc">0:07–0:13</span><span class="chip live">Live</span><span class="chip wow">Wow</span><h4>The still point</h4></header>
+<div class="pw"><pre data-style="A">Locked-off wide shot of one open concrete floor of a high-rise under construction, columns framing the city view. Arai stands perfectly still in the centre in real time, tablet at his side, while everything around him moves in fast time-lapse: crews arrive and relocate, a scissor lift crosses, pallets of drywall appear and vanish, barrier tape goes up and comes down, sunlight sweeps across the slab from morning to evening.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Camera</dt><dd>Locked off, 24mm, eye level. Generate as two 3 s clips if needed.</dd><dt>Fallback</dt><dd>If the model can't keep Arai in real time, generate an Arai plate and an empty-floor time-lapse separately and composite them.</dd><dt>VO</dt><dd>"People, equipment and priorities change throughout the day."</dd><dt>Keyframe</dt><dd>K04</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S04</span><span class="tc">0:13–0:16</span><span class="chip live">Live</span><h4>Three fronts</h4></header>
+<div class="pw"><pre data-style="A">Arai stands at the slab edge behind a guardrail, looking down at the site below: a concrete pump boom pouring at one front, a tower crane swinging a rebar bundle at another, a truck queue at the gate. He exhales slowly. Over-the-shoulder 50mm, rack focus from his helmet to the activity below.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>VO</dt><dd>"How can management keep up with the reality on the ground?"</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S05</span><span class="tc">0:16–0:19</span><span class="chip live">Live</span><h4>Chōrei</h4></header>
+<div class="pw"><pre data-style="A">Morning assembly on site: forty Japanese workers in neat rows doing synchronized radio-calisthenics stretches, helmets and harnesses on, with Mori leading from the front. Low sun, long shadows. Slow lateral dolly along the front row, then a close insert of a small black rectangular badge clipped to a harness chest strap.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Sound</dt><dd>Calisthenics piano and counting, "ichi, ni, san, shi".</dd><dt>Post</dt><dd>Replace the badge with the real Trusstor smart badge.</dd><dt>Keyframe</dt><dd>K05</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S06</span><span class="tc">0:19–0:23</span><span class="chip illus">Illus</span><span class="chip wow">Wow</span><h4>SENSE: the site draws itself</h4></header>
+<div class="pw"><pre data-style="B">The morning calisthenics slow almost to stillness with a speed ramp. The image darkens slightly and a fine white-and-teal linework layer draws itself over the scene: a small signal ring pulses from each worker's badge, contour lines trace the tower crane, the concrete pump and a scissor lift, and dashed outlines mark the work zones on the ground. Slow push-in, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Start frame</dt><dd>The last frame of S05 (wide).</dd><dt>Sound</dt><dd>Everything drops away except a soft rising tone. Each ring makes a tiny clean tick.</dd><dt>GFX</dt><dd>The SENSE pipeline node lights.</dd><dt>VO</dt><dd>"SuperApp connects physical construction activity…"</dd><dt>Keyframe</dt><dd>K06 (master reference for Style B)</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S07</span><span class="tc">0:23–0:27</span><span class="chip illus">Illus</span><span class="chip screen">Screen</span><h4>Signals land</h4></header>
+<div class="pw"><pre data-style="BC">The linework signals lift off the site as thin dotted streams, curve through the air and converge on the tablet Arai holds in the foreground, landing precisely on its screen. 35mm, camera tilts down onto the tablet.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> match-cut the incoming streams onto the real SuperApp live site overview (workers and equipment on site).</div>
+<dl><dt>VO</dt><dd>"…with digital project information…"</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S08</span><span class="tc">0:27–0:30</span><span class="chip screen">Screen</span><h4>Level 7</h4></header>
+<div class="pw"><pre data-style="AC">Over-the-shoulder close-up of Arai's hands on the rugged tablet: his finger taps, then pinches to zoom. Shallow depth of field with the site blurred behind.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> select a floor, then the Level 7 live view. <span class="chip verify">Verify</span> floor-level drill-down exists as shown.</div>
+<dl><dt>VO</dt><dd>"…creating a clearer picture of what is happening as conditions change."</dd></dl></article>
+
+<!-- ============ BLOCK 2 ============ -->
+<h2 id="b2">Block 2 · Project control <span class="tc">0:30–1:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>CONNECT (30–35 s) + Project Control (35–60 s). Follow the same floor and compare plan with observed activity. Chapter card: <i>Construction changes every hour. Management visibility should keep up.</i></div>
+  <div><b>Narration (EN)</b>"Plans are essential. But conditions change every hour. SuperApp helps teams understand where work is happening, and how the changing site compares with the plan."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S09</span><span class="tc">0:30–0:34</span><span class="chip illus">Illus</span><h4>CONNECT: kigumi</h4></header>
+<div class="pw"><pre data-style="B">Pure illustration on a deep charcoal ground: white-and-teal linework of a building section. Thin lines flow from its floors into three drawn forms (a strip of schedule bars, a wireframe model of the tower, a drawing sheet), which slide together and interlock like traditional Japanese nail-free wood joinery, locking with a precise click. Slow orbit.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Sound</dt><dd>A wooden joinery click, the same sound as the castle scene in the workshop film.</dd><dt>GFX</dt><dd>The CONNECT node lights. Chapter card 01 PROJECT CONTROL. <span class="chip verify">Verify</span> show only integrations that have been demonstrated (schedule / BIM / drawings).</dd><dt>Keyframe</dt><dd>K07</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S10</span><span class="tc">0:34–0:38</span><span class="chip live">Live</span><h4>Site office</h4></header>
+<div class="pw"><pre data-style="AC">Inside a prefab site office: Arai at a desk with a large monitor, the printed schedule pinned beside it and covered in marker corrections. He looks from the paper to the monitor. Medium shot, 50mm, slow push-in, cool daylight through blinds.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>VO</dt><dd>"Plans are essential. But conditions change every hour."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S11</span><span class="tc">0:38–0:42</span><span class="chip screen">Screen</span><h4>Plan vs observed</h4></header>
+<div class="screenbox"><b>Real recording, full frame:</b> the planned activities for Level 7 next to the observed site activity. Add a slow 3% push in post and keep the cursor movement real. <span class="chip verify">Verify</span> exactly which fields come from the project plan.</div></article>
+
+<article class="shot"><header><span class="sid">S12</span><span class="tc">0:42–0:46</span><span class="chip live">Live</span><h4>Reality on Level 7</h4></header>
+<div class="pw"><pre data-style="A">Telephoto view across Level 7. In the foreground zone, MEP workers on ladders are still installing ducts and conduit, with barrier tape across the area. In the background zone, a drywall crew is already fixing boards. 135mm telephoto compression, slow lateral slide.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Story</dt><dd>The plan has drywall in Zone B, but MEP isn't finished there, so the crew is working in Zone D. This plants the thread that pays off in S39.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S13</span><span class="tc">0:46–0:50</span><span class="chip screen">Screen</span><h4>Where work is happening</h4></header>
+<div class="screenbox"><b>Real recording:</b> observed activity by zone on the Level 7 floor plan, compared with the planned zone. <span class="chip verify">Verify</span> zone-level activity is supported.</div></article>
+
+<article class="shot"><header><span class="sid">S14</span><span class="tc">0:50–0:55</span><span class="chip live">Live</span><h4>Eyes on site</h4></header>
+<div class="pw"><pre data-style="AC">Arai walks the Level 7 corridor talking into a two-way radio. He glances at his tablet, then up at the drywall crew working in the far zone; what he sees matches the screen, and he gives a small nod. Steadicam leading him, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd><span class="jpq">「森さん、B区画はまだ設備が入ってる。D区画を先に進めよう。」</span><br>Sub: "Mori-san, Zone B still has MEP in. Let's push Zone D first."</dd><dt>VO</dt><dd>"SuperApp helps teams understand where work is happening…"</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S15</span><span class="tc">0:55–1:00</span><span class="chip live">Live</span><h4>Wind rising</h4></header>
+<div class="pw"><pre data-style="A">Exterior of the tower: green scaffold mesh sheets begin to ripple and snap in rising wind, a crane's wind sock stiffens, dust swirls across an upper slab. The camera whip-pans from a corridor window out to the exterior scaffold. 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>GFX</dt><dd>Chapter card 02 SAFETY: <i>You cannot protect what you cannot see.</i></dd></dl></article>
+
+<!-- ============ BLOCK 3 ============ -->
+<h2 id="b3">Block 3 · Safety: behavior, environment, record <span class="tc">1:00–1:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Restricted area and SOS (behavior), strong wind on the external scaffold (environment), and a time-stamped record. The manager decides; there is no automatic work stoppage.</div>
+  <div><b>Narration (EN)</b>"Safety depends on awareness. From worker behavior to environmental conditions, supported safety events are recorded, so teams can review what happened and respond with confidence."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S16</span><span class="tc">1:00–1:04</span><span class="chip live">Live</span><h4>Under the load</h4></header>
+<div class="pw"><pre data-style="A">A tower crane lifts a bundle of rebar. Below is a fenced lift zone with red-and-white barriers and cones. A young worker, eyes on his phone, steps past the barrier into the lift path. 200mm telephoto from a distance, slight handheld, tense.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Post</dt><dd>Add 立入禁止 (no entry) signage on the barrier.</dd><dt>Keyframe</dt><dd>K08</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S17</span><span class="tc">1:04–1:06</span><span class="chip illus">Illus</span><h4>Zone crossed</h4></header>
+<div class="pw"><pre data-style="B">Same frame, darkened. The lift zone is drawn as a clean dashed outline on the ground; as the worker's badge ring crosses the line, the outline turns amber and pulses once. Locked frame.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Sound</dt><dd>One clean alert tone, then a foreman's whistle.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S18</span><span class="tc">1:06–1:09</span><span class="chip screen">Screen</span><h4>Restricted-area event</h4></header>
+<div class="screenbox"><b>Real recording:</b> the restricted-area entry event as it appears in SuperApp, with its timestamp and location. <span class="chip verify">Verify</span> the actual alert behavior and who receives it.</div></article>
+
+<article class="shot"><header><span class="sid">S19</span><span class="tc">1:09–1:11</span><span class="chip live">Live</span><h4>SOS</h4></header>
+<div class="pw"><pre data-style="A">Macro: a worker kneeling on an upper-floor slab presses and holds the button on a small black badge on his harness strap with his gloved thumb. 100mm macro, very shallow depth of field, 48 fps.</pre><button class="copy" type="button">Copy</button></div></article>
+
+<article class="shot"><header><span class="sid">S20</span><span class="tc">1:11–1:14</span><span class="chip screen">Screen</span><h4>SOS event</h4></header>
+<div class="screenbox"><b>Real recording:</b> the SOS event with the worker's location and time. <span class="chip verify">Verify</span> the SOS workflow as deployed.</div></article>
+
+<article class="shot"><header><span class="sid">S21</span><span class="tc">1:14–1:18</span><span class="chip live">Live</span><h4>Strong wind at height</h4></header>
+<div class="pw"><pre data-style="A">External scaffold on the 18th floor of the tower: green mesh sheets billowing hard, three scaffold workers in harnesses clipped to the handrail steadying a board, chin straps tight. A rooftop anemometer spins fast in the foreground. Overcast sky with the Tokyo skyline behind. Drone, slow lateral drift, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Sound</dt><dd>Wind roar, mesh snapping, the anemometer whirring.</dd><dt>Keyframe</dt><dd>K09</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S22</span><span class="tc">1:18–1:21</span><span class="chip screen">Screen</span><h4>Wind condition</h4></header>
+<div class="screenbox"><b>Real recording:</b> the strong-wind reading or event. Japanese regulations define strong wind as a 10-minute average of 10 m/s or more, which is the threshold for suspending work at height. That makes it a good reference line if the data supports it. <span class="chip verify">Verify</span> the source of the wind data (site sensor or weather feed) and how the alert behaves.</div></article>
+
+<article class="shot"><header><span class="sid">S23</span><span class="tc">1:21–1:25</span><span class="chip live">Live</span><h4>The call</h4></header>
+<div class="pw"><pre data-style="AC">At the site-office window, Arai reads his tablet, looks out at the mesh sheets swaying on the tower, and lifts his radio with calm decision. Cut to the scaffold: Mori raises her hand and the team begins to descend, still clipped in, orderly. 85mm close-up, then 35mm exterior.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd><span class="jpq">「外部足場、作業中断。安全に降りてください。」</span><br>Sub: "External scaffold: pause work. Come down safely."</dd><dt>Accuracy</dt><dd>The pause is Arai's decision on the radio. Nothing is automatic.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S24</span><span class="tc">1:25–1:30</span><span class="chip screen">Screen</span><span class="chip live">Live</span><h4>The record</h4></header>
+<div class="screenbox"><b>1:25–1:28 real recording:</b> the time-stamped event history for the day, scrolling. <span class="chip verify">Verify</span> event log / history view.</div>
+<div class="pw"><pre data-style="A">1:28–1:30 · Next morning: Arai and Mori stand at the hazard-prediction (KY) board in front of the crew, pointing at a printed sheet of yesterday's events; the workers nod. 50mm medium.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>GFX</dt><dd>Chapter card 03 LABOR: <i>Make the most of every team.</i></dd></dl></article>
+
+<!-- ============ BLOCK 4 ============ -->
+<h2 id="b4">Block 4 · Labor, then equipment <span class="tc">1:30–2:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Labor (1:30–1:50): scarce crews, an imbalance, a human follow-up, less manual reporting. Resources begin (1:50): operating, idle and moving equipment. No automatic allocation.</div>
+  <div><b>Narration (EN)</b>"When skilled labor is limited, the first priority is making the most of the people already on site. Better visibility helps managers coordinate teams, while reducing time spent chasing information."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S25</span><span class="tc">1:30–1:34</span><span class="chip live">Live</span><h4>The headcount</h4></header>
+<div class="pw"><pre data-style="A">Dawn at the site gate: Arai with a clipboard counts workers by hand as they pass, phone pinned between ear and shoulder, pen tapping. Behind him is a whiteboard of crew names on magnets. A wry, patient expression. 50mm medium, slight handheld.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Post (humor)</dt><dd>An insert of his wrist step counter reading "09:40 · 12,480 歩". Played deadpan, with no music cue.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S26</span><span class="tc">1:34–1:38</span><span class="chip live">Live</span><h4>Imbalance</h4></header>
+<div class="pw"><pre data-style="A">Top-down drone view over an open upper-floor slab: six workers stand idle beside a stack of drywall pallets near the material hoist, while across the floor a single worker fixes boards alone. Slow top-down rotation, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Keyframe</dt><dd>K10</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S27</span><span class="tc">1:38–1:42</span><span class="chip illus">Illus</span><h4>Crew map</h4></header>
+<div class="pw"><pre data-style="B">The same top-down frame, darkened. Each worker becomes a small white dot with a soft teal ring, and the zones are outlined in fine linework. A dense cluster of dots sits near the hoist with a lone dot across the floor, and a thin dashed line draws itself between them.</pre><button class="copy" type="button">Copy</button></div></article>
+
+<article class="shot"><header><span class="sid">S28</span><span class="tc">1:42–1:46</span><span class="chip screen">Screen</span><h4>Workforce distribution</h4></header>
+<div class="screenbox"><b>Real recording:</b> workforce presence and distribution by floor, zone and trade. <span class="chip verify">Verify</span> which breakdowns are supported.</div></article>
+
+<article class="shot"><header><span class="sid">S29</span><span class="tc">1:46–1:50</span><span class="chip live">Live</span><h4>Coordinate</h4></header>
+<div class="pw"><pre data-style="A">Arai speaks into a radio at his desk, then sets his clipboard down, the headcount sheet left blank with a pen on top. Cut: on the slab, Mori nods and waves two waiting workers over to the far zone. 50mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd><span class="jpq">「森さん、ホイスト待ちの二人、北側を手伝ってもらえますか?」</span><br>Sub: "Mori-san, can the two waiting for the hoist help on the north side?"</dd><dt>Accuracy</dt><dd>The reallocation is a human request, not a system action.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S30</span><span class="tc">1:50–1:54</span><span class="chip live">Live</span><h4>Waiting machines</h4></header>
+<div class="pw"><pre data-style="A">Ground level of the site: an excavator idles with its engine running and bucket resting, two concrete mixer trucks queue at the gate with drums turning, and a tower crane hook hangs still overhead. A scissor lift drives past in the foreground. 35mm slow dolly, exhaust haze in cold morning light.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>GFX</dt><dd>Chapter card 04 RESOURCES: <i>Make every asset work harder, more efficiently and more safely.</i></dd><dt>Keyframe</dt><dd>K11</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S31</span><span class="tc">1:54–1:57</span><span class="chip illus">Illus</span><h4>Two kinds of signal</h4></header>
+<div class="pw"><pre data-style="B">Same frame, darkened. The heavy machinery is traced in solid continuous linework with a small live pulse at each engine. Smaller mobile tools (a generator, a welding machine, a laser level) are marked with small dotted rings that blink intermittently. The difference between solid and dotted is clear.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Accuracy</dt><dd>Solid lines mean heavy-machinery telemetry; dotted rings mean tracked mobile assets. This is the distinction the brief asks for.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S32</span><span class="tc">1:57–2:00</span><span class="chip screen">Screen</span><h4>Machine telemetry</h4></header>
+<div class="screenbox"><b>Real recording:</b> heavy-machinery status and activity indicators. <span class="chip verify">Verify</span> which telemetry is live (OEM/CAN) and which machines are connected.</div></article>
+
+<!-- ============ BLOCK 5 ============ -->
+<h2 id="b5">Block 5 · Resources, then the pivot <span class="tc">2:00–2:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Resources (2:00–2:15): finding tracked assets, safety context and a coordination decision. Operational Intelligence begins (2:15), the strongest product sequence. Chapter card: <i>See what matters, understand why, decide what's next.</i></div>
+  <div><b>Narration (EN)</b>"Equipment and resources are expensive. Understanding how they're used helps teams improve efficiency, support safer operations and reduce avoidable waiting. … The real value is not more data. It is understanding what matters."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S33</span><span class="tc">2:00–2:03</span><span class="chip live">Live</span><h4>The search</h4></header>
+<div class="pw"><pre data-style="A">A worker opens storage container after storage container looking for a welding machine, flashlight in hand, increasingly frustrated. Quick cuts, 35mm handheld.</pre><button class="copy" type="button">Copy</button></div></article>
+
+<article class="shot"><header><span class="sid">S34</span><span class="tc">2:03–2:06</span><span class="chip screen">Screen</span><h4>Found</h4></header>
+<div class="screenbox"><b>Real recording:</b> the tracked asset's last known location. <span class="chip verify">Verify</span> asset tracking coverage. Make no claim about universal material inventory.</div></article>
+
+<article class="shot"><header><span class="sid">S35</span><span class="tc">2:06–2:10</span><span class="chip live">Live</span><h4>Safe distance</h4></header>
+<div class="pw"><pre data-style="A">An excavator works beside a site walkway. A traffic marshal with a red flag and a whistle guides workers around its swing radius while Mori watches from the side. Low angle, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Accuracy</dt><dd>Add an illustrated swing-radius ring only if proximity monitoring is supported. Otherwise this stays a human safety practice.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S36</span><span class="tc">2:10–2:15</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Share the machine</h4></header>
+<div class="pw"><pre data-style="AC">Site office: Arai and the equipment coordinator lean over the monitor together. Arai draws a line on the printed site plan between two work fronts, deciding to share one mini-excavator between them. 50mm two-shot.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> equipment usage over the week. <span class="chip verify">Verify</span> utilization metrics are available.</div>
+<dl><dt>GFX</dt><dd>Chapter card 05 OPERATIONAL INTELLIGENCE.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S37</span><span class="tc">2:15–2:19</span><span class="chip live">Live</span><h4>After hours</h4></header>
+<div class="pw"><pre data-style="AC">Night in the site office: Arai alone at his desk, monitor glow on his face, rain on the window and tower-crane lights outside. He leans in. Slow push-in, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Music</dt><dd>Drops to a single sustained low tone.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S38</span><span class="tc">2:19–2:23</span><span class="chip screen">Screen</span><h4>The deviation</h4></header>
+<div class="screenbox"><b>Real recording:</b> Level 7 interior work showing a supported deviation against plan. <span class="chip verify">Verify</span> replace this example with a real insight the system supports today.</div></article>
+
+<article class="shot"><header><span class="sid">S39</span><span class="tc">2:23–2:30</span><span class="chip illus">Illus</span><span class="chip wow">Wow</span><h4>Into the picture: UNDERSTAND</h4></header>
+<div class="pw"><pre data-style="B">The camera pushes through the monitor into an illustrated world: the whole tower drawn floor by floor in fine white-and-teal linework on charcoal. Every signal from the film appears together: worker dots, the material hoist as a solid line with a queue of waiting dots on Level 5, dashed work zones and a strip of schedule bars. A single thread lights up, connecting the thinning crew dots on Level 7 to the hoist queue, and the cause becomes visible. Slow orbit around the tower, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Camera</dt><dd>Generate as two clips: the push through the screen (3 s) and the orbit (4 s).</dd><dt>GFX</dt><dd>The UNDERSTAND node lights.</dd><dt>VO</dt><dd>"The real value is not more data. It is understanding what matters."</dd><dt>Keyframe</dt><dd>K12</dd></dl></article>
+
+<!-- ============ BLOCK 6 ============ -->
+<h2 id="b6">Block 6 · Decision, one picture, close <span class="tc">2:30–3:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>The pay-off of Operational Intelligence: a human decision (2:30–2:40). One connected picture across mobile, desktop and HQ (2:40–2:53). Close and branding (2:53–3:00).</div>
+  <div><b>Narration (EN)</b>"SuperApp helps managers recognize deviations, explore their causes and decide where attention is needed. One connected picture, from the construction site to management, helps everyone work from a clearer understanding of the project. SuperApp. From physical reality to digital intelligence."</div>
+</div>
+
+<article class="shot"><header><span class="sid">S40</span><span class="tc">2:30–2:34</span><span class="chip screen">Screen</span><h4>Drill-down</h4></header>
+<div class="screenbox"><b>Real recording:</b> Arai drills into Level 7 to see activity over time next to hoist or equipment usage. <span class="chip verify">Verify</span> both data sources can be shown together.</div></article>
+
+<article class="shot"><header><span class="sid">S41</span><span class="tc">2:34–2:37</span><span class="chip live">Live</span><h4>Decision</h4></header>
+<div class="pw"><pre data-style="A">Close-up: Arai takes off his glasses and rubs the bridge of his nose, then picks up a red marker and circles the 07:00 hoist slot on tomorrow's printed schedule. 85mm, shallow depth of field, monitor glow.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>VO</dt><dd>"…and decide where attention is needed."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S42</span><span class="tc">2:37–2:40</span><span class="chip live">Live</span><h4>The morning after: EMPOWER</h4></header>
+<div class="pw"><pre data-style="A">Sunrise: the material hoist doors close on a full load of drywall pallets for the first lift of the day. Mori gives the hoist operator a thumbs-up, and up on Level 7 the crew is already at work. 35mm, warm low sun.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>GFX</dt><dd>The EMPOWER node lights, so all four stages are now lit.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S43</span><span class="tc">2:40–2:44</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>On site</h4></header>
+<div class="pw"><pre data-style="AC">On Level 7, Mori checks a smartphone in a rugged case while the crew works behind her, sunlight across the slab. Over-the-shoulder 50mm, then a slow push toward the phone.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> SuperApp on mobile. <span class="chip verify">Verify</span> the mobile view exists. GFX chapter card 06: <i>One project. One connected operational picture.</i></div></article>
+
+<article class="shot"><header><span class="sid">S44</span><span class="tc">2:44–2:48</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Site office</h4></header>
+<div class="pw"><pre data-style="AC">Match cut on the screen's position: Arai at his site-office monitor, the printed schedule beside him with the red circle. Slow pull back from the monitor, 50mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> the same project on desktop.</div></article>
+
+<article class="shot"><header><span class="sid">S45</span><span class="tc">2:48–2:53</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Headquarters</h4></header>
+<div class="pw"><pre data-style="AC">A glass corner office high above Marunouchi, Tokyo, at golden hour. The executive stands before a large wall display, with the tower under construction visible far away through the window. Slow push past his shoulder toward the display, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen:</b> the management or portfolio view. <span class="chip verify">Verify</span> show only an executive view that exists. If there isn't one, use the desktop view on a larger screen.</div>
+<dl><dt>Keyframe</dt><dd>K13</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S46</span><span class="tc">2:53–2:57</span><span class="chip live">Live</span><span class="chip wow">Wow</span><h4>「ヨシ!」</h4></header>
+<div class="pw"><pre data-style="A">Dusk on the top floor, at the same slab edge as the opening. Arai stands at the guardrail, raises his arm and points firmly across the day's work in the Japanese pointing-and-calling gesture. Behind him Tokyo Skytree glows, a white Shinkansen streaks along a distant viaduct, and Mt. Fuji is silhouetted against an orange sky. A drone pulls back and rises away from him to reveal the whole tower, as one fine teal line traces the building's outline and fades.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd>Arai, crisp: <span class="jpq">「ヨシ!」</span> (all clear)</dd><dt>Music</dt><dd>A full orchestral swell with a taiko and koto accent on the "ヨシ".</dd><dt>Keyframe</dt><dd>K14</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S47</span><span class="tc">2:57–3:00</span><span class="chip gfx">GFX</span><h4>End card</h4></header>
+<div class="screenbox" style="border-color:var(--slate);background:var(--slate-soft)"><b style="color:var(--slate)">Post:</b> SuperApp logo with the full SENSE → CONNECT → UNDERSTAND → EMPOWER pipeline lit. Line 1: <i>From Physical Reality to Digital Intelligence.</i> Line 2: <i>Construction Operations, Powered by Physical AI.</i> One deep impact, then silence.</div></article>
+
+<!-- ============ KEYFRAMES ============ -->
+<h2 id="keyframes">Keyframe image prompts</h2>
+<p>These are the reference stills that fix the look before any video is generated. Paste the matching style prompt first (the copy button adds it), and use the global negative prompt. Generate the five <span class="prio">PRIORITY</span> frames first.</p>
+
+<div class="kf"><header><span class="sid">K01</span><h4>Arai character sheet</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="A">Photorealistic character reference sheet of a Japanese site manager, about 48, short black hair greying at the temples, clean-shaven, thin dark-rimmed glasses, calm attentive expression. White helmet with chin strap, light-grey zip work jacket, navy work trousers, black safety shoes, plain white armband, holding a rugged tablet in a black grip case. Four views on one sheet: front, three-quarter, profile and a close-up portrait. Neutral grey studio background, soft even light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Source for the Arai Soul ID.</p></div>
+
+<div class="kf"><header><span class="sid">K02</span><h4>Mori character sheet</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="A">Photorealistic character reference sheet of a Japanese construction foreman, a woman about 30, hair tied back under a yellow helmet, focused and quick, full-body harness over a navy work jacket, grey tobi trousers, two-way radio on her chest strap, small black badge on the harness strap. Four views: front, three-quarter, profile and a close-up portrait. Neutral grey studio background, soft even light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Source for the Mori Soul ID.</p></div>
+
+<div class="kf"><header><span class="sid">K03</span><h4>Blue-hour establisher</h4></header>
+<div class="pw"><pre data-style="A">Cinematic still, pre-dawn blue hour over central Tokyo: a 30-storey concrete tower under construction with three tower cranes and red aviation lights, half the site floodlights on, white perimeter panels and green scaffold mesh. Tokyo Skytree softly lit on the distant skyline, light mist. High drone viewpoint, 24mm, deep focus.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S01.</p></div>
+
+<div class="kf"><header><span class="sid">K04</span><h4>The still point</h4></header>
+<div class="pw"><pre data-style="A">Cinematic still: wide symmetrical view of an open concrete floor of a high-rise under construction, columns framing the city, morning light raking across the slab. Arai stands perfectly still in the exact centre holding a tablet, with blurred, motion-streaked workers and a scissor lift moving around him, as in a long exposure. Locked-off, 24mm, eye level.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S03, and the reference for the "manager is the still point" idea.</p></div>
+
+<div class="kf"><header><span class="sid">K05</span><h4>Chōrei</h4></header>
+<div class="pw"><pre data-style="A">Cinematic still: morning assembly on a Tokyo construction site, forty Japanese workers in neat rows doing synchronized stretches, arms raised, helmets and harnesses on. Mori leads from the front, facing them. Low golden sun, long shadows across the ground, tower cranes behind. 35mm, slightly low angle.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S05 and the base plate for S06.</p></div>
+
+<div class="kf"><header><span class="sid">K06</span><h4>SENSE: illustration master frame</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="B">The K05 morning assembly scene, darkened and slightly desaturated, overlaid with the Physical AI linework layer: a small concentric teal signal ring at each worker's chest badge, fine white contour lines tracing the tower crane, a concrete pump and a scissor lift, dashed outlines marking three work zones on the ground, faint isometric tick marks. Elegant, sparse, clearly illustrated.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Defines Style B for every illustration shot (S06, S07, S09, S17, S27, S31, S39). Lock this frame before generating any of them.</p></div>
+
+<div class="kf"><header><span class="sid">K07</span><h4>CONNECT: kigumi joinery</h4></header>
+<div class="pw"><pre data-style="B">Pure illustration on a deep charcoal ground: three white-and-teal linework forms (a strip of schedule bars, a wireframe model of a tower, a drawing sheet) interlocking like traditional Japanese nail-free wood joinery, caught at the moment the joints click together. Fine lines flow into them from a drawn building section on the left. Centered, isometric, precise.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S09.</p></div>
+
+<div class="kf"><header><span class="sid">K08</span><h4>Under the load</h4></header>
+<div class="pw"><pre data-style="A">Cinematic telephoto still: a tower crane lifting a bundle of rebar high above a fenced lift zone with red-and-white barriers and cones; a young worker looking at his phone has just stepped past the barrier into the lift path. Overcast light, 200mm compression, tension.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S16 and the base plate for S17.</p></div>
+
+<div class="kf"><header><span class="sid">K09</span><h4>Strong wind at height</h4></header>
+<div class="pw"><pre data-style="A">Cinematic still: the external scaffold on the 18th floor of a Tokyo tower under construction, green mesh sheets billowing hard in strong wind, three workers in harnesses clipped to the handrail steadying a board, chin straps tight. A rooftop anemometer spins in the foreground. Grey overcast sky with the city skyline behind. Drone viewpoint, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S21.</p></div>
+
+<div class="kf"><header><span class="sid">K10</span><h4>Crew imbalance, top-down</h4></header>
+<div class="pw"><pre data-style="A">Top-down drone still of an open upper-floor concrete slab: six workers standing idle beside stacked drywall pallets near the material hoist, and across the floor a single worker fixing boards alone. Clean geometric composition, columns as a grid, soft daylight. 24mm, straight down.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S26 and the base plate for S27.</p></div>
+
+<div class="kf"><header><span class="sid">K11</span><h4>Waiting machines</h4></header>
+<div class="pw"><pre data-style="A">Cinematic still at ground level on a Tokyo site: an idle excavator with its bucket resting, two concrete mixer trucks queued at the gate, a tower crane hook hanging still overhead, a scissor lift in the foreground, and a generator and welding machine beside a storage container. Cold morning light, light exhaust haze. 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S30 and the base plate for S31 (heavy machinery and mobile tools in one frame).</p></div>
+
+<div class="kf"><header><span class="sid">K12</span><h4>Into the picture: the illustrated tower</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="B">Pure illustration on charcoal: a 30-storey tower drawn floor by floor in fine white-and-teal linework, three-quarter view. Small white worker dots on several floors, the material hoist drawn as a solid vertical line with a short queue of dots at Level 5, dashed work-zone outlines, a horizontal strip of schedule bars floating beside it. One brighter teal thread connects the sparse dots on Level 7 to the hoist queue. Calm, precise, beautiful.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">The pivotal image of the film (S39). Also usable as the poster or social thumbnail.</p></div>
+
+<div class="kf"><header><span class="sid">K13</span><h4>Headquarters</h4></header>
+<div class="pw"><pre data-style="AC">Cinematic still: a glass corner office high above Marunouchi, Tokyo, at golden hour. A silver-haired Japanese executive in a charcoal suit stands before a large wall-mounted display; far away through the window, the tower under construction with its cranes. 35mm from behind his shoulder.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S45.</p></div>
+
+<div class="kf"><header><span class="sid">K14</span><h4>「ヨシ!」 closing hero</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="A">Cinematic still at dusk on the top floor of a Tokyo tower under construction: Arai at the guardrail, arm extended, index finger pointing firmly across the site in the Japanese pointing-and-calling gesture, seen in profile. Behind him Tokyo Skytree glows, a white Shinkansen streaks along a distant elevated viaduct, and Mt. Fuji is silhouetted against an orange-to-violet sky. Tower cranes are lit. 50mm, shallow depth of field.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S46, and the final image people remember.</p></div>
+
+<div class="kf"><header><span class="sid">K15</span><h4>Screen plate master</h4></header>
+<div class="pw"><pre data-style="AC">Close-up of a site manager's hands holding a rugged tablet in a black grip case on a construction floor, thumb resting at the edge, the site softly blurred behind. Daylight. 50mm, shallow depth of field.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">A consistent device look for every tablet insert. Make phone and monitor versions from the same prompt.</p></div>
+
+<!-- ============ SCREEN MAP ============ -->
+<h2 id="screens">Screen-to-shot map and accuracy gate</h2>
+<p>Every <span class="chip screen">Screen</span> shot has to map to a real SuperApp or Trusstor workflow before generation starts. This table is the brief's "screen-to-workflow mapping" deliverable, ready for product to fill in.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Shot</th><th>Time</th><th>SuperApp screen needed</th><th>Confirm before filming</th></tr></thead>
+<tbody>
+<tr><td class="m">S07–S08</td><td class="m">0:23–0:30</td><td>Live site overview → Level 7</td><td>Floor drill-down; which workers and equipment are shown live</td></tr>
+<tr><td class="m">S11</td><td class="m">0:38–0:42</td><td>Plan vs observed activity</td><td>Exactly which fields come from the project schedule</td></tr>
+<tr><td class="m">S13</td><td class="m">0:46–0:50</td><td>Activity by zone on the floor plan</td><td>Zone granularity</td></tr>
+<tr><td class="m">S18</td><td class="m">1:06–1:09</td><td>Restricted-area entry event</td><td>Alert behavior and recipients</td></tr>
+<tr><td class="m">S20</td><td class="m">1:11–1:14</td><td>SOS event with location</td><td>The SOS workflow as deployed</td></tr>
+<tr><td class="m">S22</td><td class="m">1:18–1:21</td><td>Strong-wind reading or event</td><td>Source of the wind data; whether a threshold alert exists</td></tr>
+<tr><td class="m">S24</td><td class="m">1:25–1:28</td><td>Time-stamped event history</td><td>Log or history view and export</td></tr>
+<tr><td class="m">S28</td><td class="m">1:42–1:46</td><td>Workforce distribution</td><td>By floor, zone and trade</td></tr>
+<tr><td class="m">S32</td><td class="m">1:57–2:00</td><td>Heavy-machinery telemetry</td><td>Connected machines and metrics shown</td></tr>
+<tr><td class="m">S34</td><td class="m">2:03–2:06</td><td>Tracked-asset location</td><td>Tag coverage; no inventory claim</td></tr>
+<tr><td class="m">S36</td><td class="m">2:10–2:15</td><td>Equipment usage over time</td><td>Utilization metric availability</td></tr>
+<tr><td class="m">S38, S40</td><td class="m">2:19–2:34</td><td>Deviation → drill-down (workforce + hoist/equipment)</td><td><b>The most important item.</b> Use a real insight from a pilot site.</td></tr>
+<tr><td class="m">S43</td><td class="m">2:40–2:44</td><td>Mobile view</td><td>That the mobile view exists</td></tr>
+<tr><td class="m">S44</td><td class="m">2:44–2:48</td><td>Desktop view of the same project</td><td>—</td></tr>
+<tr><td class="m">S45</td><td class="m">2:48–2:53</td><td>Executive or portfolio view</td><td>Only if it has been demonstrated</td></tr>
+</tbody></table></div>
+<div class="note">Things the film never shows: automatic work stoppage, automatic dispatch or reallocation of workers, robots, autonomous machines, or the system "deciding". Every action is taken by Arai or Mori, on the radio or on paper. The story is built around that.</div>
+
+<h2 id="cut30">30-second exhibition / social cut</h2>
+<p>Built from the same shots, with no extra generation:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Cut time</th><th>Shot</th><th>Beat</th></tr></thead>
+<tbody>
+<tr><td class="m">0:00–0:04</td><td class="m">S03</td><td>The still point. "Nothing on a construction site stands still."</td></tr>
+<tr><td class="m">0:04–0:08</td><td class="m">S06 → S07</td><td>SENSE: the site draws itself, and the signals land on the real screen</td></tr>
+<tr><td class="m">0:08–0:12</td><td class="m">S21 → S22</td><td>Wind at height, then the wind event</td></tr>
+<tr><td class="m">0:12–0:15</td><td class="m">S26 → S27</td><td>Crew imbalance, then the crew map</td></tr>
+<tr><td class="m">0:15–0:21</td><td class="m">S39</td><td>Into the picture. "Understand what matters."</td></tr>
+<tr><td class="m">0:21–0:24</td><td class="m">S41 → S42</td><td>The red circle, then the first hoist lift of the morning</td></tr>
+<tr><td class="m">0:24–0:27</td><td class="m">S46</td><td>「ヨシ!」</td></tr>
+<tr><td class="m">0:27–0:30</td><td class="m">S47</td><td>End card</td></tr>
+</tbody></table></div>
+</main>
+</div>
+
+<script>
+(function(){
+  var styles={A:'styleA',B:'styleB',C:'styleC'};
+  function textFor(pre){
+    var t=pre.textContent.trim();
+    var s=pre.getAttribute('data-style');
+    var inc=document.getElementById('incStyle');
+    if(s && inc && inc.checked){
+      var parts=[];
+      s.split('').forEach(function(k){
+        if(k==='C') return;
+        var el=document.getElementById(styles[k]); if(el) parts.push(el.textContent.trim());
+      });
+      parts.push(t);
+      if(s.indexOf('C')>-1){var c=document.getElementById('styleC'); if(c) parts.push(c.textContent.trim());}
+      t=parts.join('\n\n');
+    }
+    return t;
+  }
+  function selectText(el){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var pre=b.parentElement.querySelector('pre'); if(!pre) return;
+    var txt=textFor(pre);
+    function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok');},1400);}
+    try{
+      navigator.clipboard.writeText(txt).then(done,function(){selectText(pre);b.textContent='Selected';});
+    }catch(err){selectText(pre);b.textContent='Selected';}
+  });
+})();
+</script>
