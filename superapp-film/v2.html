@@ -1,0 +1,633 @@
+<title>SuperApp Film Prompt Pack v2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: production call-sheet. Sticky timeline rail, one column of shot cards. Every card ends in a hand-off line: flow is the point of v2. */
+:root{
+  --bg:#F1F4F4; --paper:#FFFFFF; --fg:#121C20; --muted:#56656B; --line:#D3DCDE;
+  --green:#0C7A4E; --amber:#B86E00; --cyan:#0A7C93; --slate:#55606B; --red:#B3261E; --violet:#5B4BB0;
+  --green-soft:#E2F0E8; --amber-soft:#F7ECD9; --cyan-soft:#DCF0F4; --slate-soft:#E7EAED; --red-soft:#F6E3E1; --violet-soft:#ECE9F8;
+  --code:#F6F8F8;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.rail{display:none}}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;font-size:13px}
+.rail a{display:flex;gap:8px;color:var(--muted);text-decoration:none;padding:5px 0 5px 10px;border-left:2px solid var(--line)}
+.rail a:hover,.rail a:focus-visible{color:var(--fg);border-left-color:var(--cyan)}
+.rail .tcs{font-family:var(--mono);font-size:11.5px;min-width:72px;font-variant-numeric:tabular-nums}
+.rail .grp{font-family:var(--display);font-weight:700;color:var(--fg);margin:18px 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+main{min-width:0}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,46px);font-weight:900;line-height:1.1;letter-spacing:-.01em}
+h1 .jp{display:block;font-size:.42em;font-weight:500;color:var(--muted);letter-spacing:.12em;margin-top:10px}
+h2{font-size:26px;font-weight:900;margin-top:56px;padding-top:20px;border-top:3px solid var(--fg);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+h2 .tc{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--muted)}
+h3{font-size:17px;font-weight:700;margin:28px 0 10px}
+p{margin:0 0 12px;max-width:72ch}
+.lede{font-size:17px;max-width:68ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0;align-items:center}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip.live{background:var(--green-soft);color:var(--green)}
+.chip.screen{background:var(--amber-soft);color:var(--amber)}
+.chip.cyan{background:var(--cyan-soft);color:var(--cyan)}
+.chip.twin{background:var(--violet-soft);color:var(--violet)}
+.chip.gfx{background:var(--slate-soft);color:var(--slate)}
+.chip.wow{background:var(--fg);color:var(--bg)}
+.chip.verify{background:var(--red-soft);color:var(--red)}
+.chip.vision{background:var(--violet);color:var(--paper)}
+.chip.reuse{background:var(--slate-soft);color:var(--slate)}
+.legend span.d{font-size:13px;color:var(--muted);margin-right:8px}
+.note{border-left:3px solid var(--cyan);padding:10px 14px;background:var(--paper);margin:16px 0;max-width:80ch;font-size:14px}
+.note.warn{border-left-color:var(--red)}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:78ch}
+li{margin:4px 0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin:14px 0}
+@media (max-width:700px){.cols{grid-template-columns:minmax(0,1fr)}}
+.cols>div{background:var(--paper);border:1px solid var(--line);padding:14px 16px;min-width:0}
+.cols h4{font-size:14px;margin-bottom:8px;letter-spacing:.04em}
+.cols .was h4{color:var(--red)} .cols .now h4{color:var(--cyan)}
+.cols ul{font-size:14px;margin:0}
+.pipeline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;margin:10px 0 18px}
+.pipeline span{padding:4px 10px;border:1.5px solid var(--cyan);color:var(--cyan)}
+.pipeline i{font-style:normal;color:var(--muted)}
+.pw{position:relative;margin:10px 0}
+pre{font-family:var(--mono);font-size:12.8px;line-height:1.6;background:var(--code);border:1px solid var(--line);padding:14px;margin:0;white-space:pre-wrap;word-wrap:break-word;overflow-x:auto;color:var(--fg)}
+.pw pre{padding-right:78px}
+.copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;padding:4px 9px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer;border-radius:3px}
+.copy:hover{border-color:var(--fg)}
+.copy:focus-visible,.rail a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.copy.ok{background:var(--cyan);color:var(--paper);border-color:var(--cyan)}
+.toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:8px 0 0}
+.block-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin:14px 0 6px}
+@media (max-width:640px){.block-intro{grid-template-columns:minmax(0,1fr)}}
+.block-intro div{background:var(--paper);border:1px solid var(--line);padding:12px 14px;font-size:14px;min-width:0}
+.block-intro b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:4px}
+.shot{background:var(--paper);border:1px solid var(--line);margin:14px 0;padding:14px 16px}
+.shot header{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.shot .sid{font-family:var(--display);font-weight:900;font-size:18px}
+.shot .tc{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.shot h4{font-size:16px;font-weight:700;flex:1 1 200px}
+.shot dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13.5px}
+@media (max-width:520px){.shot dl{grid-template-columns:minmax(0,1fr)}.shot dt{margin-top:6px}}
+.shot dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.shot dd{margin:0;min-width:0}
+.handoff{margin:10px 0 0;padding:8px 12px;background:var(--cyan-soft);font-size:13.5px;border-left:3px solid var(--cyan)}
+.handoff b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);margin-right:6px}
+.jpq{font-family:var(--display);font-weight:500}
+.screenbox{border:1.5px dashed var(--amber);padding:10px 12px;margin:10px 0 0;font-size:14px;background:var(--amber-soft)}
+.screenbox b{color:var(--amber)}
+.tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:680px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.m{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pin{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.pin.o{background:var(--amber)} .pin.r{background:var(--cyan)}
+.kf{background:var(--paper);border:1px solid var(--line);padding:14px 16px;margin:12px 0}
+.kf header{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.kf .sid{font-family:var(--display);font-weight:900;font-size:17px}
+.kf h4{font-size:15.5px}
+.kf .use{font-size:13px;color:var(--muted);margin:6px 0 0}
+.prio{font-family:var(--mono);font-size:11px;color:var(--red)}
+.vo p{margin:0 0 6px}
+.vo .t{font-family:var(--mono);font-size:12px;color:var(--muted);display:inline-block;min-width:46px;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<nav class="rail" aria-label="Sections">
+  <div class="grp">Why v2</div>
+  <a href="#diagnosis"><span class="tcs">—</span>Flow diagnosis</a>
+  <a href="#spine"><span class="tcs">—</span>The spine</a>
+  <div class="grp">Setup</div>
+  <a href="#setup"><span class="tcs">—</span>Chain method</a>
+  <a href="#global"><span class="tcs">A–E</span>Global prompts</a>
+  <a href="#cast"><span class="tcs">—</span>Cast &amp; units</a>
+  <a href="#vo"><span class="tcs">—</span>Narration</a>
+  <div class="grp">Film · 180s</div>
+  <a href="#b1"><span class="tcs">0:00–0:30</span>Wake · Sense</a>
+  <a href="#b2"><span class="tcs">0:30–1:00</span>Connect · Control</a>
+  <a href="#b3"><span class="tcs">1:00–1:30</span>Safety</a>
+  <a href="#b4"><span class="tcs">1:30–2:00</span>Labor · Equipment</a>
+  <a href="#b5"><span class="tcs">2:00–2:30</span>Understand</a>
+  <a href="#b6"><span class="tcs">2:30–3:00</span>Act · Resolve</a>
+  <div class="grp">Reference</div>
+  <a href="#keyframes"><span class="tcs">K01–K22</span>Keyframes</a>
+  <a href="#screens"><span class="tcs">—</span>Screen spec</a>
+  <a href="#cut30"><span class="tcs">0:30</span>Social cut</a>
+</nav>
+
+<main>
+<div class="eyebrow">Higgsfield production prompts · v2 (flow rebuild) · approved brief structure</div>
+<h1>SuperApp: From Physical Reality to Digital Intelligence<span class="jp">フィジカルAIで、現場の今を経営の判断へ</span></h1>
+<div class="meta">
+  <span><b>180 s</b> · six 30 s blocks · 37 shots (v1 had 47)</span>
+  <span><b>16:9</b> · 4K · 24 fps (48/60 fps on slow-motion shots)</span>
+  <span><b>Screens:</b> light mode, on devices and on floating glass panels</span>
+  <span><b>One day:</b> 05:50 → 21:40 → the next morning → dusk</span>
+</div>
+<p class="lede">One tower, one day, one continuous journey. A cyan signal thread carries the camera from each scene into the next. Every challenge leaves a glowing amber pin on a living digital twin of the tower. AI joins the pins into a single cause, Arai approves the plan, and Physical AI acts on it. In the last 20 seconds every pin turns cyan.</p>
+
+<div class="legend">
+  <span class="chip live">Live</span><span class="d">Ultra-real footage</span>
+  <span class="chip cyan">Cyan</span><span class="d">Glowing connectivity layer in the scene</span>
+  <span class="chip twin">Twin</span><span class="d">AI illustration: the Living Tower</span>
+  <span class="chip screen">Screen</span><span class="d">Real SuperApp UI (light mode), comped in</span>
+  <span class="chip vision">Vision</span><span class="d">Physical AI action (roadmap)</span>
+  <span class="chip gfx">GFX</span><span class="d">Post graphics</span>
+  <span class="chip verify">Verify</span><span class="d">Product accuracy gate item</span>
+</div>
+
+<!-- ============ DIAGNOSIS ============ -->
+<h2 id="diagnosis">Why v1 doesn't flow</h2>
+<p>The thing that's hard to pin down is that v1 is built like a feature list, not a journey. Specifically:</p>
+<div class="cols">
+  <div class="was"><h4>v1</h4><ul>
+    <li>47 shots averaging 3.8 s, each generated on its own. No shot was written to hand off to the next, so every cut is a jump.</li>
+    <li>Six chapter cards stop the film six times.</li>
+    <li>Every chapter repeats the same loop of problem, screen, fix. The rhythm becomes predictable by 1:00.</li>
+    <li>Each problem is fixed on the spot, so no tension carries into the next chapter.</li>
+    <li>The real story (the hoist bottleneck) only appears at 2:20.</li>
+    <li>The music stops and restarts, and the audience never knows where in the tower they are.</li>
+    <li>The future appears in only four short moments, so most of the film reads as today.</li>
+  </ul></div>
+  <div class="now"><h4>v2</h4><ul>
+    <li><b>The Cyan Thread.</b> The camera follows one glowing signal between scenes, so every transition has a reason.</li>
+    <li><b>Hand-off frames.</b> Every prompt ends on the frame the next one starts from. Clips are generated as a chain.</li>
+    <li><b>The Living Tower hub.</b> Between chapters we pull out to the twin, an amber pin drops, and we dive into the next floor. It works as a map and a rhythm, and replaces the chapter cards.</li>
+    <li><b>Open loops.</b> Each challenge is detected and explained, and the humans hold the line, but it stays amber. Tension builds up to 2:20.</li>
+    <li><b>The hoist is seeded in every chapter:</b> waiting materials (Level 7), lift traffic (safety), the idle crew at the hoist (labor), and the queue (equipment).</li>
+    <li><b>One clock and one score:</b> a single day, a single track with three planned drops.</li>
+    <li><b>The future is everywhere:</b> glowing badges, cyan connectivity in every scene, floating light-mode UI, and Physical AI actions in the pay-off.</li>
+  </ul></div>
+</div>
+
+<!-- ============ SPINE ============ -->
+<h2 id="spine">The spine: flow at a glance</h2>
+<div class="pipeline"><span>SENSE</span><i>→</i><span>CONNECT</span><i>→</i><span>UNDERSTAND</span><i>→</i><span>EMPOWER</span></div>
+<div class="tablewrap"><table>
+<thead><tr><th>Time</th><th>Brief beat</th><th>Clock</th><th>Where in the tower</th><th>Tower pins</th><th>Score</th></tr></thead>
+<tbody>
+<tr><td class="m">0:00–0:15</td><td>Opening</td><td class="m">05:50</td><td>City → roof → Level 7</td><td>—</td><td>Low strings, taiko heartbeat</td></tr>
+<tr><td class="m">0:15–0:35</td><td>SENSE &amp; CONNECT</td><td class="m">06:30</td><td>Ground (chōrei) → twin</td><td>Twin is born</td><td>First lift: pulse and shimmer</td></tr>
+<tr><td class="m">0:35–1:00</td><td>Project control</td><td class="m">08:40</td><td>Level 7</td><td><span class="pin o"></span>L7</td><td>Steady build</td></tr>
+<tr><td class="m">1:00–1:26</td><td>Safety</td><td class="m">11:05</td><td>Crane zone → L12 → L18 scaffold</td><td><span class="pin o"></span><span class="pin o"></span><span class="pin o"></span>+3</td><td>Tension, wind texture</td></tr>
+<tr><td class="m">1:26–1:50</td><td>Labor</td><td class="m">13:30</td><td>Level 5 at the hoist</td><td><span class="pin o"></span>+1</td><td>Rhythmic, insistent</td></tr>
+<tr><td class="m">1:50–2:15</td><td>Resources</td><td class="m">15:10</td><td>Ground yard → L3</td><td><span class="pin o"></span>+1 (6 amber)</td><td>Peak density</td></tr>
+<tr><td class="m">2:15–2:30</td><td>Operational intelligence</td><td class="m">21:40</td><td>Site office → inside the twin</td><td>Pins connect → the hoist</td><td><b>Drop 1</b>: silence, then a rising swell</td></tr>
+<tr><td class="m">2:30–2:40</td><td>Decision → action</td><td class="m">21:42 → 05:00</td><td>Office → whole tower</td><td>Hoist node turns cyan</td><td><b>Drop 2</b> on Approve, then full drive</td></tr>
+<tr><td class="m">2:40–2:53</td><td>One connected picture</td><td class="m">07:00 next day</td><td>L7 → office → HQ</td><td><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span> all cyan</td><td>Anthem</td></tr>
+<tr><td class="m">2:53–3:00</td><td>Close</td><td class="m">Dusk</td><td>Roof → Tokyo</td><td>The city lights up</td><td><b>Drop 3</b>: 「ヨシ!」, then the final hit</td></tr>
+</tbody></table></div>
+
+<div class="note warn"><b>Two decisions for Omri:</b> (1) The brief's accuracy gate rules out autonomous action as a current capability. In v2, AI recommends, Arai approves on screen, and only then do the Physical AI units act (S32). These shots carry the <span class="chip vision">Vision</span> tag. Either sign off on them as roadmap or add a subtle "Physical AI · next" label. RTLS sensing and AI insights are shown as today's product. (2) The brief asked to avoid holograms. You've now asked for glowing elements, so v2 uses them throughout. They are elegant and depth-correct, never HUD clutter.</div>
+
+<!-- ============ SETUP ============ -->
+<h2 id="setup">Chain method: how to generate for flow</h2>
+<ol>
+  <li><b>Keep the assets you already made.</b> Cast Soul IDs and the keyframes marked <span class="chip reuse">Reuse v1</span> carry over. Generate the new keyframes first, especially K16 (Living Tower master), K17 (floating light-mode panel) and K06 (SENSE glow).</li>
+  <li><b>Generate in film order, as a chain.</b> Export the last frame of each finished clip and use it as the start frame of the next. The <b>Hand-off</b> line in each card says exactly what that frame must contain.</li>
+  <li><b>Match cuts:</b> where a hand-off says MATCH, generate both clips from the same keyframe composition (same framing, same subject position).</li>
+  <li><b>Prompt order:</b> base style (A or E) + layer style (B) + shot prompt + device style (C or D). The copy buttons assemble this for you. Put the negative prompt in its own field.</li>
+  <li><b>Clips longer than 5 s</b> are split into a/b parts with a hidden cut on movement. Each part has its own prompt.</li>
+  <li><b>UI, text, logos and kanji are always added in post.</b> Devices and panels are generated blank (light mode, with tracking dots), and real SuperApp recordings are tracked onto them.</li>
+  <li><b>Lock the score before you edit.</b> One continuous track, with cuts timed to its beats. A temp track is fine. This alone makes the film feel twice as fluid.</li>
+</ol>
+
+<!-- ============ GLOBAL ============ -->
+<h2 id="global">Global prompts</h2>
+<label class="toggle"><input type="checkbox" id="incStyle" checked> Add the matching style prompts when copying a shot prompt</label>
+
+<h3>Style A · Ultra-real near-future live action <span class="chip live">Live</span></h3>
+<div class="pw"><pre id="styleA">Photorealistic, ultra-detailed cinematic live action, ARRI Alexa 65 large-format look with anamorphic lenses, 24 fps, 4K HDR, subtle film grain, natural skin pores and fabric texture, realistic physics, motion blur and lens behaviour. Setting: an immaculate, orderly 30-storey high-rise construction site in central Tokyo in the near future: white perimeter panels, green scaffold mesh sheets, white electric tower cranes, a glass-walled site office, clean exposed concrete slabs. Japanese workers in authentic site workwear (white or yellow helmets with chin straps, full-body harnesses, tobi trousers, long-sleeve work jackets), each wearing a small sleek smart badge on the harness strap with a soft cyan status light. Premium product-film composition, calm, confident, awe-inspiring and real.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style B · Cyan connectivity layer <span class="chip cyan">Cyan</span></h3>
+<div class="pw"><pre id="styleB">A luminous cyan connectivity layer integrated into the real scene: thin glowing cyan lines with a soft bloom, small light particles travelling along them, gentle pulse rings expanding from smart badges, glowing contour outlines on machines and work zones. The light is depth-correct, passing behind and in front of objects and reflecting faintly on wet concrete, glass and helmets. Elegant, sparse, high-end technology product film. No sci-fi HUD clutter, no text, no numbers.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style C · Device screen, light mode</h3>
+<div class="pw"><pre id="styleC">The device screen glows bright white in light mode: a blank pale-grey interface area with four small dark tracking dots in its corners, no readable text, ready for screen replacement. Cool white screen light falls on the face and hands, with natural reflections on the glass.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style D · Floating light-mode glass panels</h3>
+<div class="pw"><pre id="styleD">Thin frosted-glass interface panels float in the air in front of the character in light mode: bright white surfaces with soft drop shadows and a fine glowing cyan edge, blank content areas with four small tracking dots for screen replacement. The panels unfold smoothly from the device like folding paper, with realistic depth of field, parallax and reflections. No readable text.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Style E · The Living Tower (AI illustration world) <span class="chip twin">Twin</span></h3>
+<div class="pw"><pre id="styleE">AI illustration world: a 30-storey tower rendered as a luminous digital twin of clear glass and fine cyan linework, floating in deep navy-black space. Floor slabs are thin glowing planes, people and machines are tiny particles of light, with soft volumetric glow, isometric precision and cinematic shallow depth of field. Amber glowing pins mark open issues and cyan pins mark resolved ones. Premium, calm, awe-inspiring. No text.</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Negative prompt (every shot)</h3>
+<div class="pw"><pre id="negative">cartoon, anime, video game look, plastic CGI look, cluttered sci-fi HUD, neon cyberpunk, purple or pink glow, distorted faces, extra or missing fingers, changing character face or clothing, missing helmet, worker at height without harness, messy or dirty site, dark-mode user interface, generated user interface, readable generated text, gibberish kanji, logos, watermarks, burned-in subtitles, oversaturated colors, excessive lens flare, stock footage look, slideshow transitions</pre><button class="copy" type="button">Copy</button></div>
+<p>For S01–S31, also add <b>"robots, autonomous machines"</b> to the negative prompt. Robots appear only from S32 onward.</p>
+
+<!-- ============ CAST ============ -->
+<h2 id="cast">Cast &amp; Physical AI units</h2>
+<div class="shot">
+  <header><span class="sid">ARAI</span><span class="chip reuse">Reuse v1 Soul ID</span><h4>Site manager (所長): the calm still point</h4></header>
+  <div class="pw"><pre>Japanese man, about 48, short black hair greying at the temples, clean-shaven, thin dark-rimmed glasses, calm attentive expression. White helmet with chin strap, light-grey zip work jacket, navy work trousers, black safety shoes, plain white armband, sleek smart badge with a cyan light. Carries a slim rugged tablet.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<div class="shot">
+  <header><span class="sid">MORI</span><span class="chip reuse">Reuse v1 Soul ID</span><h4>Foreman (職長): Arai's hands on the floor</h4></header>
+  <div class="pw"><pre>Japanese woman, about 30, hair tied back under a yellow helmet, focused and quick, full-body harness over a navy work jacket, grey tobi trousers, two-way radio on her chest strap, sleek smart badge with a cyan light, smartphone in a rugged case.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<div class="shot">
+  <header><span class="sid">EXEC</span><span class="chip reuse">Reuse v1</span><h4>Headquarters executive</h4></header>
+  <div class="pw"><pre>Japanese executive, about 60, silver hair, charcoal suit with no tie, standing in a glass corner office high above Marunouchi, Tokyo.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<div class="shot">
+  <header><span class="sid">UNITS</span><span class="chip vision">Vision</span><h4>Physical AI units (appear only in S32)</h4></header>
+  <div class="pw"><pre>Design language for all units: matte white bodies, soft rounded industrial design, a thin cyan light strip, no logos, no faces, realistic weight and dust. (1) Smart material hoist with a cyan status ring. (2) Low autonomous pallet mover carrying stacked drywall. (3) Compact layout robot drawing lines on a concrete slab. (4) Four-legged inspection robot. (5) White inspection drone with a cyan underglow.</pre><button class="copy" type="button">Copy</button></div>
+</div>
+<p><b>Badge:</b> composite the real Trusstor badge in post on hero close-ups (S04, S15). In wide shots the generated sleek badge with its cyan light is enough.</p>
+
+<!-- ============ VO ============ -->
+<h2 id="vo">Narration: one continuous voice</h2>
+<p>The narration is written as one piece, not one line per chapter. The images carry the transitions, so the voice never announces a chapter. JP subtitles are made from this text; have a native speaker check them.</p>
+<div class="shot vo">
+<p><span class="t">0:02</span>On a construction site, nothing stands still.</p>
+<p><span class="t">0:07</span>People, equipment and priorities change every hour.</p>
+<p><span class="t">0:12</span>So how does anyone keep up with the reality on the ground?</p>
+<p><span class="t">0:17</span>SuperApp senses the site as it moves: every crew, every machine, every zone.</p>
+<p><span class="t">0:25</span>And connects it to the plans, the models and the schedule.</p>
+<p><span class="t">0:37</span>Plans are essential. But the site changes faster than any plan.</p>
+<p><span class="t">0:44</span>Now you can see where work is really happening, and how it compares.</p>
+<p><span class="t">1:01</span>Safety depends on awareness.</p>
+<p><span class="t">1:07</span>A step into a crane zone. A call for help. Wind at height.</p>
+<p><span class="t">1:16</span>Every event is detected, recorded and put in front of the people who decide.</p>
+<p><span class="t">1:31</span>When skilled people are scarce, every hour of every team matters.</p>
+<p><span class="t">1:39</span>See where crews are, where they wait and where they're needed, without a single manual headcount.</p>
+<p><span class="t">1:52</span>Machines are expensive. Waiting machines cost even more.</p>
+<p><span class="t">1:57</span>Live telemetry shows what's working, what's waiting and where everything is.</p>
+<p><span class="t">2:17</span>The real value isn't more data.</p>
+<p><span class="t">2:22</span>It's understanding. Connecting every signal to the one cause behind them all.</p>
+<p><span class="t">2:30</span><i>(silence: Arai approves)</i></p>
+<p><span class="t">2:35</span>Then turning that understanding into action, in the physical world.</p>
+<p><span class="t">2:41</span>One connected picture. From the site, to the office, to headquarters.</p>
+<p><span class="t">2:49</span>Every challenge seen. Every decision informed.</p>
+<p><span class="t">2:56</span>SuperApp. From physical reality to digital intelligence.</p>
+</div>
+
+<!-- ============ BLOCK 1 ============ -->
+<h2 id="b1">Block 1 · The site wakes, the site is sensed <span class="tc">0:00–0:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Opening (0–15 s): a site that never stands still. SENSE (15–30 s): physical reality becomes visible.</div>
+  <div><b>Flow job</b>Establish one tower, one man and one clock, then give birth to the Cyan Thread and the Living Tower, the two devices that carry the rest of the film.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S01</span><span class="tc">0:00–0:06</span><span class="chip live">Live</span><h4>Tokyo, 05:50</h4><span class="chip reuse">K03</span></header>
+<div class="pw"><pre data-style="A">One continuous drone glide at pre-dawn blue hour, from high over the Tokyo skyline toward a 30-storey tower under construction with three white tower cranes and red aviation lights. Site floodlights switch on floor by floor as the camera approaches. Tokyo Skytree softly lit in the distance, thin mist over the city. The glide ends at the open top floor, where a lone man in a white helmet stands at the slab edge, seen from behind. 24mm, slow forward descent, deep focus.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>Arai from behind, small in frame, the city beyond him. S02 starts from his position, re-framed on Level 7.</div>
+<dl><dt>Sound</dt><dd>City hum, a distant crane horn. The score enters: low strings and a taiko heartbeat (this track runs to 3:00).</dd><dt>Post</dt><dd>Small time stamp lower left: 05:50 · TOKYO</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S02</span><span class="tc">0:06–0:12</span><span class="chip live">Live</span><span class="chip wow">Wow</span><h4>The still point</h4><span class="chip reuse">K04</span></header>
+<div class="pw"><pre data-style="A">Locked-off symmetrical wide shot of the open concrete floor of Level 7. Arai stands perfectly still in the centre in real time, while everything around him races in time-lapse from morning to evening: crews arrive and relocate, a scissor lift crosses, drywall pallets appear and vanish, barrier tape goes up and comes down, sunlight sweeps across the slab. A printed paper schedule taped to the column beside him flutters but never changes. At the end the light snaps back to early morning and everything freezes.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The frozen morning floor. Push slowly toward Arai's face for S03.</div>
+<dl><dt>Camera</dt><dd>Locked off, 24mm. Split into a (0:06–0:09) and b (0:09–0:12) if needed, or composite an Arai plate over an empty-floor time-lapse.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S03</span><span class="tc">0:12–0:15</span><span class="chip live">Live</span><h4>The question</h4></header>
+<div class="pw"><pre data-style="A">Close-up of Arai on the frozen morning floor. He glances at the paper schedule on the column, then down through the open slab edge toward the ground far below, where workers are gathering in rows. A quiet exhale. 85mm, slow push-in, then the camera tilts down past the slab edge, following his gaze.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The tilt down becomes a vertical drop past the facade to the morning assembly. MATCH on the downward motion.</div></article>
+
+<article class="shot"><header><span class="sid">S04</span><span class="tc">0:15–0:21</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><span class="chip wow">Wow</span><h4>SENSE: the site lights up</h4><span class="chip reuse">K05 base</span></header>
+<div class="pw"><pre data-style="AB">Ground level, 06:30: forty workers in neat rows doing synchronized morning radio-calisthenics stretches, Mori leading at the front. A speed ramp slows them to near stillness, arms raised. One by one each worker's smart badge lights with a soft cyan glow, and gentle cyan pulse rings expand from every badge across the crowd like ripples on still water. Glowing cyan contour lines trace the tower cranes, the concrete pump and the material hoist, and thin lines draw the work zones on the ground. Slow crane-down then push-in, 35mm, 60 fps.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The pulse rings break into small particles of light that begin to rise. S05 rises with them.</div>
+<dl><dt>Sound</dt><dd>Calisthenics piano and "ichi, ni, san, shi" fade into a soft rising shimmer. Each ring makes a clean tick on the beat.</dd><dt>GFX</dt><dd>SENSE appears as a fine cyan word low in frame, part of the light layer rather than a card.</dd><dt>Post</dt><dd>Real Trusstor badge on Mori's strap in the close insert.</dd><dt>Keyframe</dt><dd>K06</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S05</span><span class="tc">0:21–0:26</span><span class="chip cyan">Cyan</span><span class="chip twin">Twin</span><h4>The tower comes alive</h4></header>
+<div class="pw"><pre data-style="AB">The camera rises with thousands of small cyan light particles streaming up the tower's facade. As they climb, glowing cyan lines trace the building's structure floor by floor (columns, slabs, the hoist shaft), so the real tower is gradually wrapped in its own luminous outline. Near the top the streams curve away and dive toward the glass-walled site office at the base, entering through the window. Fast vertical drone rise, then an arc and descent, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The streams pass through the office glass and converge on Arai's tablet.</div></article>
+
+<article class="shot"><header><span class="sid">S06</span><span class="tc">0:26–0:30</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>The live site map</h4></header>
+<div class="pw"><pre data-style="ABD">Inside the glass site office at dawn, Arai holds his tablet as the cyan streams land on its screen. The tablet lights up bright white and a large frosted light-mode panel unfolds smoothly into the air above it, showing a live site map. Cool white light washes over his face. 50mm, slow push past his shoulder into the floating panel.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> LIVE SITE MAP (RTLS): the tower in plan or isometric view, workers and equipment as live dots, tap to Level 7. <span class="chip verify">Verify</span> the real screen name and floor drill-down.</div>
+<div class="handoff"><b>Hand-off</b>The camera pushes into the map's tower icon. MATCH: the map becomes the Living Tower in S07.</div></article>
+
+<!-- ============ BLOCK 2 ============ -->
+<h2 id="b2">Block 2 · Connect, then the first open loop <span class="tc">0:30–1:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>CONNECT (30–35 s) + Project control (35–60 s): follow the same floor, compare plan with observed activity.</div>
+  <div><b>Flow job</b>Introduce the Living Tower hub, then the first amber pin. The waiting drywall pallets plant the hoist thread.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S07</span><span class="tc">0:30–0:35</span><span class="chip twin">Twin</span><span class="chip wow">Wow</span><h4>CONNECT: the Living Tower</h4><span class="chip">K16</span></header>
+<div class="pw"><pre data-style="E">The camera emerges inside the Living Tower, the luminous glass-and-cyan digital twin floating in navy-black space with tiny particles of light moving on its floors. Three bright white light-mode panels glide in from the darkness (a schedule of horizontal bars, a detailed 3D building model, a drawing sheet) and slot into the tower like traditional Japanese nail-free wood joinery, locking with a precise click and a ripple of cyan light through every floor. Slow orbit, then a dive toward Level 7.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The camera dives into Level 7 of the twin; its glowing slab MATCHES the real Level 7 floor in S08.</div>
+<dl><dt>Sound</dt><dd>A wooden joinery click (callback to the workshop film) and a harmonic swell.</dd><dt>Post</dt><dd>Real logos and screenshots on the three panels: schedule (e.g. Primavera P6), model (e.g. Autodesk), drawings. <span class="chip verify">Verify</span> show only integrations that have been demonstrated. CONNECT word in the light layer.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S08</span><span class="tc">0:35–0:41</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>Level 7, 08:40</h4></header>
+<div class="pw"><pre data-style="AB">Steadicam leading Arai along Level 7. In Zone B the plan calls for drywall, but MEP workers on ladders are still installing ducts and conduit, and a stack of drywall pallets sits waiting, wrapped. Across the floor in Zone D, a drywall crew is already fixing boards. On the slab, Zone B is outlined by a thin dashed white line, while warm cyan activity glows under the crew in Zone D. Arai slows, raises his tablet into frame. 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The tablet rises to fill the lower half of the frame, so S09 continues over his shoulder onto the screen.</div>
+<dl><dt>Post</dt><dd>Time stamp 08:40 · L7.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S09</span><span class="tc">0:41–0:46</span><span class="chip screen">Screen</span><h4>Plan vs reality</h4></header>
+<div class="pw"><pre data-style="AC">Over-the-shoulder close-up of Arai's tablet held over the Level 7 floor, the real zones blurred behind it. His finger taps a zone and a second light panel slides open on screen. 50mm, shallow depth of field.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> SCHEDULE vs ACTUAL · L7. Planned: drywall in Zone B. Observed (RTLS): crew active in Zone D, MEP still in Zone B. AI insight card: "Zone B drywall start at risk: MEP still active, materials waiting." <span class="chip verify">Verify</span> fields from the plan, and the wording of the insight card.</div>
+<div class="handoff"><b>Hand-off</b>Arai lifts his eyes from the screen across the floor toward Mori. Whip-pan to her.</div></article>
+
+<article class="shot"><header><span class="sid">S10</span><span class="tc">0:46–0:52</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>A line between two people</h4></header>
+<div class="pw"><pre data-style="AB">Wide shot across Level 7: Arai on one side speaks into his radio, Mori on the far side in Zone D answers and nods. A thin cyan line arcs through the air from Arai's tablet to Mori's smart badge, pulses once and stays. Mori turns to her crew and points to the next area. 35mm, slow lateral dolly between them.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd>Arai: <span class="jpq">「森さん、B区画はまだ設備が残ってる。D区画を先行しよう。」</span> Mori: <span class="jpq">「了解です。」</span><br>Sub: "Mori-san, Zone B still has MEP in. Let's push Zone D first." "Understood."</dd></dl>
+<div class="handoff"><b>Hand-off</b>The camera follows the cyan line up and out of the window. S11 pulls back to the twin.</div></article>
+
+<article class="shot"><header><span class="sid">S11</span><span class="tc">0:52–0:56</span><span class="chip twin">Twin</span><h4>First pin</h4></header>
+<div class="pw"><pre data-style="E">A fast pull-back out of the building into the Living Tower view. On Level 7 a small amber glowing pin drops gently onto the floor plane and pulses softly. It is held, not resolved. The rest of the tower glows cyan. Then the tower's outer scaffold lines begin to flutter and ripple as if caught by wind. Slow orbit, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The fluttering scaffold lines of the twin MATCH the real mesh sheets rippling in S12.</div>
+<dl><dt>Why</dt><dd>The pin is the open loop. Arai's workaround keeps people busy, but the root cause is still there.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S12</span><span class="tc">0:56–1:00</span><span class="chip live">Live</span><h4>The wind arrives</h4></header>
+<div class="pw"><pre data-style="A">Exterior of the real tower: green scaffold mesh sheets ripple and snap in rising wind, a crane wind sock stiffens. The camera dives down along the facade, past floors, toward a crane lifting a bundle of rebar over a fenced lift zone at the base. 24mm drone dive.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The dive lands on the crane lift zone, the start of S13.</div></article>
+
+<!-- ============ BLOCK 3 ============ -->
+<h2 id="b3">Block 3 · Safety: behavior, environment, record <span class="tc">1:00–1:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Restricted area and SOS (behavior), strong wind on the external scaffold (environment), and a time-stamped record. The manager decides.</div>
+  <div><b>Flow job</b>Three quick events in rising scale (ground, mid-tower, top), three pins, and the crane lifts seed the hoist traffic. Ends by diving into Level 5.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S13</span><span class="tc">1:00–1:05</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>The crane zone, 11:05</h4><span class="chip">K08</span></header>
+<div class="pw"><pre data-style="AB">A white tower crane lifts a bundle of rebar. On the ground beneath it, a glowing cyan geofence outlines the lift zone. A young worker looking at his phone steps across the line; the outline instantly turns amber and pulses, and his badge light blinks amber. He stops, looks up at the load overhead, and steps back out. The line returns to cyan. 200mm telephoto from a distance, then a 50mm insert of the badge.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The amber pulse ripples outward and becomes a notification on a floating panel in S14. MATCH on the amber color.</div>
+<dl><dt>Post</dt><dd>立入禁止 signage on the barrier. Time stamp 11:05.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S14</span><span class="tc">1:05–1:09</span><span class="chip screen">Screen</span><h4>Safety events</h4></header>
+<div class="pw"><pre data-style="AD">Arai at the glass site-office window, the crane visible outside. A light-mode panel floats beside him and a new event card slides in at the top with an amber edge; he turns his head toward it. 50mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> SAFETY EVENTS. "Restricted zone entry · Crane Zone A · 11:05:32", then an SOS card arrives below it. <span class="chip verify">Verify</span> real alert behavior and recipients.</div>
+<div class="handoff"><b>Hand-off</b>The SOS card pulses red, cutting to the badge close-up in S15. MATCH on the pulse.</div></article>
+
+<article class="shot"><header><span class="sid">S15</span><span class="tc">1:09–1:12</span><span class="chip live">Live</span><h4>SOS, Level 12</h4></header>
+<div class="pw"><pre data-style="AB">Macro: on Level 12, a kneeling worker's gloved thumb presses and holds the button on his smart badge. The badge light turns from cyan to a steady red, and a red pulse ring expands. Rack focus to the background: Mori already running toward him across the slab. 100mm macro, 60 fps, then rack focus.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>Mori runs out of frame toward the open facade. The camera continues past her outside and climbs to Level 18 for S16.</div>
+<dl><dt>Screen</dt><dd><span class="chip verify">Verify</span> SOS workflow and location precision.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S16</span><span class="tc">1:12–1:18</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><span class="chip wow">Wow</span><h4>Wind made visible</h4><span class="chip reuse">K09 base</span></header>
+<div class="pw"><pre data-style="AB">External scaffold on Level 18: green mesh sheets billow hard, three workers in harnesses clipped to the handrail steady a board, chin straps tight, and a rooftop anemometer spins in the foreground. The wind itself becomes visible as flowing translucent cyan streamlines wrapping around the tower, accelerating and swirling at the corners, beautiful and slightly ominous. Overcast Tokyo skyline. Drone orbit around the corner of the tower, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The streamlines gather into a single bright cyan line that flows into the office window, onto Arai's panel in S17.</div></article>
+
+<article class="shot"><header><span class="sid">S17</span><span class="tc">1:18–1:22</span><span class="chip screen">Screen</span><h4>Wind at height</h4></header>
+<div class="pw"><pre data-style="AD">Close on Arai's face lit by a floating light-mode panel, the swaying mesh sheets reflected in the office glass behind it. His eyes move across the panel. 85mm, shallow depth of field.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> ENVIRONMENT · Wind 10-min average 11.2 m/s · Scaffold L16–20 · 3 workers at height. AI insight: "Above the 10 m/s strong-wind threshold. Review external work." <span class="chip verify">Verify</span> the wind data source; the numbers are illustrative.</div>
+<div class="handoff"><b>Hand-off</b>Arai lifts his radio into frame, and the cut to S18 happens on the movement.</div></article>
+
+<article class="shot"><header><span class="sid">S18</span><span class="tc">1:22–1:26</span><span class="chip live">Live</span><h4>The call</h4></header>
+<div class="pw"><pre data-style="A">Arai speaks into his radio with calm decision. Cut on the movement to the scaffold on Level 18: Mori raises her hand, and the three workers descend in order, still clipped in, the mesh sheets snapping behind them. 85mm, then a 35mm drone.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd><span class="jpq">「外部足場、作業中断。安全帯を掛けたまま降りてください。」</span> Sub: "External scaffold: pause work. Come down with your harnesses clipped."</dd><dt>Accuracy</dt><dd>A human decision, recorded in the event log.</dd></dl>
+<div class="handoff"><b>Hand-off</b>The drone pulls away from the scaffold into the twin for S19.</div></article>
+
+<article class="shot"><header><span class="sid">S19</span><span class="tc">1:26–1:30</span><span class="chip twin">Twin</span><h4>Pins gather</h4></header>
+<div class="pw"><pre data-style="E">Living Tower view: three new amber pins drop, one at the crane zone at the base, one on Level 12, one on the Level 18 scaffold, joining the pin on Level 7. A faint timeline of small event marks scrolls along the base of the tower like a record. Then on Level 5, a cluster of motionless light particles near the hoist shaft starts to pulse. The camera dives toward it.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The dive into Level 5 of the twin MATCHES the real Level 5 slab in S20.</div>
+<dl><dt>Screen</dt><dd>The event timeline stands in for SAFETY EVENT HISTORY. Show the real log in S33. <span class="chip verify">Verify</span></dd></dl></article>
+
+<!-- ============ BLOCK 4 ============ -->
+<h2 id="b4">Block 4 · Labor, then equipment <span class="tc">1:30–2:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Labor (85–110 s): scarce crews, an imbalance, a human follow-up, less manual reporting. Resources (110 s on): operating, idle and moving equipment.</div>
+  <div><b>Flow job</b>The hoist moves from background to foreground: crews wait at it and machines queue for it. Two more pins.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S20</span><span class="tc">1:30–1:35</span><span class="chip live">Live</span><h4>Waiting at the hoist, 13:30</h4></header>
+<div class="pw"><pre data-style="A">Level 5: six skilled workers stand waiting beside stacked drywall pallets at the closed material hoist doors, while across the floor one worker fixes boards alone. A foreman with a clipboard counts heads and makes a phone call at the same time. 35mm slow dolly along the waiting workers, ending on the closed hoist doors.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The camera rises straight up from the hoist doors to a top-down view for S21.</div>
+<dl><dt>Post (humor)</dt><dd>A 1 s insert of the foreman's step counter: "13:30 · 12,480 歩". Deadpan, with no music cue.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S21</span><span class="tc">1:35–1:40</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><span class="chip wow">Wow</span><h4>Movement made visible</h4><span class="chip">K18</span></header>
+<div class="pw"><pre data-style="AB">Top-down view over the Level 5 slab. Time accelerates and each worker leaves a glowing cyan light trail behind them, so a whole morning of movement draws itself on the floor: long wasted loops between zones, and a bright dense knot of tangled trails piled up at the hoist doors. The pattern is beautiful and revealing. Slow top-down rotation, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The glowing knot at the hoist MATCHES the hot spot of the heatmap in S22.</div></article>
+
+<article class="shot"><header><span class="sid">S22</span><span class="tc">1:40–1:45</span><span class="chip screen">Screen</span><h4>Workforce insight</h4></header>
+<div class="pw"><pre data-style="AC">Arai in the site office, his tablet lying flat on the desk, the light-mode screen glowing up onto his face; he leans in. 50mm top-down onto the tablet, then tilt up to his face.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> WORKFORCE · L5–L9 by trade: a heatmap with its hot spot at the hoist. AI insight: "Drywall crew: 38% waiting time at the material hoist, 11:00–14:00." <span class="chip verify">Verify</span> breakdowns are supported; the numbers are illustrative.</div>
+<div class="handoff"><b>Hand-off</b>Arai reaches for his radio; cut on the movement.</div></article>
+
+<article class="shot"><header><span class="sid">S23</span><span class="tc">1:45–1:50</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>Rebalance</h4></header>
+<div class="pw"><pre data-style="AB">Level 5: Mori hears the radio, nods, and waves two of the waiting workers over to the north side, where the lone worker is. As they walk, their badges' cyan lights draw two short clean lines across the floor. The foreman lowers his clipboard and looks at it, the headcount sheet no longer needed. 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd>Arai (radio): <span class="jpq">「森さん、ホイスト待ちの二人、北側に回してください。」</span> Sub: "Mori-san, move the two waiting for the hoist to the north side."</dd><dt>Accuracy</dt><dd>Human coordination, not automatic allocation.</dd></dl>
+<div class="handoff"><b>Hand-off</b>The camera follows the hoist shaft straight down, floor after floor, to the ground yard for S24.</div></article>
+
+<article class="shot"><header><span class="sid">S24</span><span class="tc">1:50–1:55</span><span class="chip live">Live</span><h4>The yard, 15:10</h4><span class="chip">K19</span></header>
+<div class="pw"><pre data-style="A">Ground-level yard: an excavator idles with its engine running and bucket resting, two concrete mixer trucks queue at the gate with drums turning, a crane hook hangs still, and a truck of drywall pallets waits beside the busy hoist base. A scissor lift drives past in the foreground. Cold afternoon light, exhaust haze. 35mm slow dolly.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The same frame continues into S25 as the cyan layer appears. No cut, same composition.</div></article>
+
+<article class="shot"><header><span class="sid">S25</span><span class="tc">1:55–2:00</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>Two kinds of signal</h4></header>
+<div class="pw"><pre data-style="AB">The same yard frame. Each heavy machine is traced in a solid glowing cyan outline with a small breathing light at its engine, slow amber breathing for idle and flowing cyan for working. Smaller mobile tools (a generator, a welding machine, a laser level) are marked with small dotted cyan rings that blink intermittently. The material hoist glows brightest of all, with a short queue of amber-outlined vehicles waiting for it. Slow push-in toward the hoist.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>A whip-pan from the hoist toward a storage container, where a worker is opening the doors (S26).</div>
+<dl><dt>Accuracy</dt><dd>Solid outlines mean heavy-machinery telemetry; dotted rings mean tracked mobile assets.</dd></dl></article>
+
+<!-- ============ BLOCK 5 ============ -->
+<h2 id="b5">Block 5 · Resources, then UNDERSTAND <span class="tc">2:00–2:30</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>Resources (to 135 s), then Operational intelligence (135–160 s): the strongest product moment. The AI reveals a meaningful discrepancy and the manager investigates.</div>
+  <div><b>Flow job</b>The last pin, night falls, and the first drop. Then the film's centerpiece: all six pins connect to one cause.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S26</span><span class="tc">2:00–2:05</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><h4>Found in seconds</h4></header>
+<div class="pw"><pre data-style="ABC">A worker searching a storage container for a welding machine checks his phone; the bright light-mode screen shows a location. A glowing cyan path line draws itself on the ground from his feet, across the yard and into the building. He follows it, and the camera tracks with him to Level 3, where the welding machine sits behind pallets, its dotted cyan ring blinking. 35mm handheld.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> ASSETS · Welding machine W-07 · L3 north-east · seen 2 min ago. <span class="chip verify">Verify</span> asset tracking coverage. Make no claim about material inventory.</div>
+<div class="handoff"><b>Hand-off</b>The camera continues past the machine to the office window and Arai's monitor (S27).</div></article>
+
+<article class="shot"><header><span class="sid">S27</span><span class="tc">2:05–2:10</span><span class="chip screen">Screen</span><h4>The bottleneck has a name</h4></header>
+<div class="pw"><pre data-style="AC">Site office: Arai and the equipment coordinator stand at a large bright light-mode monitor. The coordinator points at one line on the screen, and Arai slowly folds his arms. 50mm two-shot, slow push toward the monitor.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> EQUIPMENT · Utilization today. Excavator 31% active · Material hoist 96% booked · 14 requests queued at peak. AI insight: "Material hoist is today's constraint." <span class="chip verify">Verify</span> utilization metrics; the numbers are illustrative.</div>
+<div class="handoff"><b>Hand-off</b>The camera pushes through the monitor into the twin for S28.</div></article>
+
+<article class="shot"><header><span class="sid">S28</span><span class="tc">2:10–2:15</span><span class="chip twin">Twin</span><h4>Six pins, night falls</h4><span class="chip">K20</span></header>
+<div class="pw"><pre data-style="E">Living Tower view: a sixth amber pin drops at the ground yard beside the hoist. Six amber pins now glow across the tower: Level 7, the crane zone, Level 12, the Level 18 scaffold, Level 5 and the yard. The surrounding space darkens from twilight blue to night, and the amber pins become the brightest things in frame. Slow orbit, then the camera drifts back out through a window.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The camera exits the twin and finds the amber pins reflected in Arai's glasses (S29). MATCH on the amber reflections.</div></article>
+
+<article class="shot"><header><span class="sid">S29</span><span class="tc">2:15–2:20</span><span class="chip live">Live</span><h4>21:40</h4></header>
+<div class="pw"><pre data-style="AD">Night in the glass site office, rain streaking the window and crane lights outside. Arai sits alone, and a floating light-mode panel shows a small glowing tower with six amber points, reflected in his glasses. He takes the glasses off and leans toward the panel. 85mm, very slow push-in.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>As he leans in, the camera passes through the panel into the twin for S30.</div>
+<dl><dt>Score</dt><dd><b>Drop 1:</b> the music falls to rain and a single low tone.</dd><dt>VO</dt><dd>"The real value isn't more data."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S30</span><span class="tc">2:20–2:30</span><span class="chip twin">Twin</span><span class="chip screen">Screen</span><span class="chip wow">Wow</span><h4>UNDERSTAND: one cause</h4><span class="chip">K21</span></header>
+<div class="pw"><pre data-style="E">a (2:20–2:25) · Inside the Living Tower at night. The six amber pins lift gently off their floors and fine cyan threads begin to connect them, one after another: the Level 7 pin to the waiting pallets, the Level 5 idle crew to the hoist doors, the yard queue to the hoist base, the crane lifts to hoist traffic. The threads tighten and pull toward the hoist shaft. Slow orbit, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre data-style="ED">b (2:25–2:30) · All the threads converge on the material hoist shaft, which ignites into a single brilliant node of light running the full height of the tower. A large light-mode glass panel unfolds beside it, and the camera settles in front of the panel and the glowing shaft.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> AI INSIGHT · Root cause: material hoist sequencing. Effects: L7 drywall delay, L5 crew waiting, yard queue. Recommended plan: pre-load drywall overnight; priority hoist slots 07:00–09:00; projected recovery: L7 back on plan in 3 days. [ APPROVE ] <span class="chip verify">Verify</span> which parts of the insight are supported today. Recommendation and projection may need a roadmap label.</div>
+<div class="handoff"><b>Hand-off</b>The camera finds Arai's finger in front of the APPROVE button (S31).</div>
+<dl><dt>GFX</dt><dd>UNDERSTAND in the light layer.</dd><dt>VO</dt><dd>"It's understanding. Connecting every signal to the one cause behind them all."</dd></dl></article>
+
+<!-- ============ BLOCK 6 ============ -->
+<h2 id="b6">Block 6 · Approve, act, everything resolves <span class="tc">2:30–3:00</span></h2>
+<div class="block-intro">
+  <div><b>Brief</b>The pay-off of Operational intelligence (to 160 s), one connected picture (160–173 s), close (173–180 s).</div>
+  <div><b>Flow job</b>One human tap releases the whole film's tension. Physical AI acts overnight, every pin turns cyan in order, and the change spreads to the city.</div>
+</div>
+
+<article class="shot"><header><span class="sid">S31</span><span class="tc">2:30–2:34</span><span class="chip live">Live</span><h4>Approve</h4></header>
+<div class="pw"><pre data-style="AD">Extreme close-up: Arai's finger hovers in front of a floating light-mode panel, pauses for one breath, then taps. A ripple of cyan light spreads across the panel from his fingertip. Rack focus to his calm face. 100mm macro, 60 fps.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The cyan ripple leaves the panel, races out of the window and down into the hoist shaft (S32a).</div>
+<dl><dt>Score</dt><dd><b>Drop 2:</b> total silence, a single soft tap, then the full orchestral drive kicks in.</dd><dt>GFX</dt><dd>EMPOWER: the pipeline is complete.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S32</span><span class="tc">2:34–2:40</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><span class="chip vision">Vision</span><span class="chip wow">Wow</span><h4>Physical AI acts overnight</h4><span class="chip">K22</span></header>
+<p>Four 1.5 s beats, each generated as its own 3 s clip. The ripple of cyan light from S31 travels through all four. Moonlight, wet concrete, cyan reflections.</p>
+<div class="pw"><pre data-style="AB">a · Night, ground yard: a low white autonomous pallet mover with a thin cyan light strip glides a stack of wrapped drywall into the open material hoist; the hoist's cyan status ring lights and the doors close smoothly. 35mm low angle.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre data-style="AB">b · Level 7, Zone B, night: a compact white layout robot drives across the clean slab drawing precise cyan-lit lines for tomorrow's drywall, the MEP work now complete overhead. Top-down, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre data-style="AB">c · The crane lift zone at the base: a white four-legged inspection robot with a cyan light strip walks to the edge of the glowing cyan geofence and stands guard. 50mm, low angle.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre data-style="AB">d · First light at Level 18: a white inspection drone with a cyan underglow rises along the now-calm scaffold, its scan light sweeping across the mesh sheets, which hang still. 35mm drone follow.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The drone rises into a sunrise; the sun flares across the lens and the cut lands on Level 7 at 07:00 (S33).</div>
+<dl><dt>VO</dt><dd>"Then turning that understanding into action, in the physical world."</dd><dt>Accuracy</dt><dd><span class="chip vision">Vision</span> These are roadmap capabilities, triggered by Arai's approval. Label them or sign them off with Omri.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S33</span><span class="tc">2:40–2:44</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Resolved on site, 07:00</h4></header>
+<div class="pw"><pre data-style="ABC">Next morning, sunrise on Level 7: the drywall crew works in Zone B along the fresh layout lines, and pallets arrive from the hoist without anyone waiting. Mori checks her phone, its bright light-mode screen glowing, and allows herself a small smile. On Level 5, visible through the open slab edge, the crews are spread evenly. 50mm over-the-shoulder onto the phone.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (mobile, light mode):</b> L7 · On plan ✓ · Hoist slots 07:00–09:00 ✓ · Crew balance ✓. As the beat ends, a mini Living Tower shows the L7 and L5 pins turning cyan. <span class="chip verify">Verify</span> mobile view.</div>
+<div class="handoff"><b>Hand-off</b>MATCH on the screen position: Mori's phone becomes Arai's desktop monitor (S34).</div></article>
+
+<article class="shot"><header><span class="sid">S34</span><span class="tc">2:44–2:48</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Resolved in the office</h4></header>
+<div class="pw"><pre data-style="AC">The site office in bright morning light: Arai at a large light-mode monitor, coffee in hand. Through the glass behind him, the excavator is working, there is no truck queue at the gate, and on the scaffold above, workers are back at height under a calm sky. 50mm slow pull back from the monitor.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (desktop, light mode):</b> SAFETY EVENTS · 0 open, with yesterday's events logged and closed · EQUIPMENT · hoist queue 0 · Wind 4 m/s. The crane zone, L12, L18 and yard pins turn cyan. <span class="chip verify">Verify</span> event history and close-out workflow.</div>
+<div class="handoff"><b>Hand-off</b>MATCH: the monitor becomes the HQ wall display (S35).</div></article>
+
+<article class="shot"><header><span class="sid">S35</span><span class="tc">2:48–2:53</span><span class="chip live">Live</span><span class="chip screen">Screen</span><h4>Resolved at headquarters</h4><span class="chip reuse">K13</span></header>
+<div class="pw"><pre data-style="AC">A glass corner office high above Marunouchi, Tokyo, in morning light. The executive stands before a large light-mode wall display; far away through the window, the tower and its cranes. He gives a small, satisfied nod. 35mm slow push past his shoulder onto the display.</pre><button class="copy" type="button">Copy</button></div>
+<div class="screenbox"><b>Screen (light mode):</b> MANAGEMENT VIEW: the Living Tower fully cyan, all six pins resolved, the project back on plan. <span class="chip verify">Verify</span> show only an executive view that has been demonstrated.</div>
+<div class="handoff"><b>Hand-off</b>The camera passes his shoulder toward the window and the distant tower; time jumps to dusk (S36).</div>
+<dl><dt>VO</dt><dd>"One connected picture… every challenge seen. Every decision informed."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">S36</span><span class="tc">2:53–2:57</span><span class="chip live">Live</span><span class="chip cyan">Cyan</span><span class="chip wow">Wow</span><h4>「ヨシ!」, and the city lights up</h4><span class="chip reuse">K14 base</span></header>
+<div class="pw"><pre data-style="AB">Dusk on the top floor, at the same slab edge as the opening shot. Arai raises his arm and points firmly across the site in the Japanese pointing-and-calling gesture. A drone pulls back and rises away from him: the tower is wrapped in calm glowing cyan lines, and threads of cyan light reach out across Tokyo from the tower to other construction sites, which light up one by one across the skyline, toward Skytree and the silhouette of Mt. Fuji in an orange-violet sky. A white Shinkansen streaks along a distant viaduct.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd>Arai, crisp: <span class="jpq">「ヨシ!」</span> (all clear)</dd><dt>Score</dt><dd><b>Drop 3:</b> a beat of silence for the 「ヨシ」, then the full final hit with taiko and koto.</dd><dt>Meaning</dt><dd>One site becomes the industry: the change spreads across the city.</dd></dl>
+<div class="handoff"><b>Hand-off</b>The city's cyan network contracts into the SuperApp mark (S37).</div></article>
+
+<article class="shot"><header><span class="sid">S37</span><span class="tc">2:57–3:00</span><span class="chip gfx">GFX</span><h4>End card</h4></header>
+<div class="screenbox" style="border-color:var(--slate);background:var(--slate-soft)"><b style="color:var(--slate)">Post:</b> the cyan lines draw the SuperApp logo, with the full SENSE → CONNECT → UNDERSTAND → EMPOWER pipeline lit. <i>From Physical Reality to Digital Intelligence.</i> / <i>Construction Operations, Powered by Physical AI.</i> One deep impact, then silence.</div></article>
+
+<!-- ============ KEYFRAMES ============ -->
+<h2 id="keyframes">Keyframe image prompts</h2>
+<p>Paste the style prompt first (the copy button adds it) and use the global negative prompt. <span class="chip reuse">Reuse v1</span> means keep the frame you already generated. <span class="prio">PRIORITY</span> marks the new frames to make first: they set the v2 look.</p>
+
+<div class="kf"><header><span class="sid">K01–K02</span><h4>Arai and Mori character sheets</h4><span class="chip reuse">Reuse v1</span></header>
+<p class="use">Keep them. If the badge isn't visible, add "sleek smart badge with a soft cyan light on the harness strap" and regenerate only the close-up portrait.</p></div>
+
+<div class="kf"><header><span class="sid">K03</span><h4>Tokyo, 05:50</h4><span class="chip reuse">Reuse v1</span></header><p class="use">Start frame for S01. If you regenerate it, make the cranes white.</p></div>
+<div class="kf"><header><span class="sid">K04</span><h4>The still point</h4><span class="chip reuse">Reuse v1</span></header><p class="use">Start frame for S02. Add the paper schedule taped to the column.</p></div>
+<div class="kf"><header><span class="sid">K05</span><h4>Chōrei</h4><span class="chip reuse">Reuse v1</span></header><p class="use">Base plate for S04.</p></div>
+
+<div class="kf"><header><span class="sid">K06</span><h4>SENSE: the glowing assembly</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="AB">Cinematic still: a morning assembly of forty Japanese construction workers frozen mid-stretch with arms raised, low golden sun. Every worker's smart badge glows soft cyan and overlapping cyan pulse rings spread across the crowd like ripples on water. Glowing cyan contour lines trace two white tower cranes, a concrete pump and the material hoist behind them. Mori in front, facing the crew. 35mm, slightly low angle.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Master reference for the Style B glow level. Every cyan shot should match this intensity.</p></div>
+
+<div class="kf"><header><span class="sid">K16</span><h4>The Living Tower</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="E">A 30-storey tower under construction rendered as a luminous digital twin of clear glass and fine cyan linework, floating in deep navy-black space, three-quarter view. Thin glowing floor slabs, a bright vertical hoist shaft, tiny particles of light for workers and machines on several floors, and three bright white light-mode glass panels hovering beside it (a schedule of bars, a 3D model, a drawing sheet). Majestic and precise.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">The hub of the film: S07, S11, S19, S28 and S30 all come back to it. Lock it first.</p></div>
+
+<div class="kf"><header><span class="sid">K17</span><h4>Floating light-mode panel</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="AD">Cinematic still in a glass-walled site office at dawn: Arai holds a slim tablet whose bright white screen has unfolded a large frosted-glass light-mode panel into the air above it, with a fine cyan edge. Cool white light on his face, the tower and its cranes through the window behind. 50mm over the shoulder.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Defines Style D for S06, S14, S17, S29, S30 and S31. Use it to brief the UI motion designer on panel size and edge glow.</p></div>
+
+<div class="kf"><header><span class="sid">K07</span><h4>Level 7: plan vs reality</h4></header>
+<div class="pw"><pre data-style="AB">Cinematic still across the Level 7 slab: in the foreground zone, MEP workers on ladders install ducts and a stack of wrapped drywall pallets waits, outlined by a dashed white line on the floor; in the far zone, a drywall crew works on a warm cyan glow. Arai in the midground holding a tablet. 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S08.</p></div>
+
+<div class="kf"><header><span class="sid">K08</span><h4>Crane geofence</h4></header>
+<div class="pw"><pre data-style="AB">Cinematic telephoto still: a white tower crane lifting rebar above a lift zone outlined on the ground by a glowing geofence that has just turned amber; a young worker who stepped inside it looks up, his badge blinking amber. Overcast light, 200mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S13.</p></div>
+
+<div class="kf"><header><span class="sid">K09</span><h4>Wind made visible</h4><span class="chip reuse">Reuse v1 base</span></header>
+<div class="pw"><pre data-style="AB">Your v1 Level 18 wind-scaffold frame, now with translucent flowing cyan wind streamlines wrapping around the corner of the tower, accelerating and swirling past the billowing mesh sheets.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Use v1 K09 as the image reference and this as an edit prompt. Start frame for S16.</p></div>
+
+<div class="kf"><header><span class="sid">K18</span><h4>Movement trails</h4></header>
+<div class="pw"><pre data-style="AB">Top-down still of an open concrete slab: glowing cyan light trails left by workers' movements across a whole morning, with long looping paths between zones and a dense bright tangled knot of trails at the closed material hoist doors, where drywall pallets wait. Columns form a clean grid. 24mm, straight down.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S21. The best image in the film for social media.</p></div>
+
+<div class="kf"><header><span class="sid">K19</span><h4>The yard</h4></header>
+<div class="pw"><pre data-style="AB">Cinematic still of the ground-level yard: an idle excavator with a slow amber engine light inside a solid cyan outline, two mixer trucks queued with amber outlines, the material hoist base glowing brightest, and small dotted cyan rings on a generator and a welding machine. Cold afternoon light, exhaust haze. 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Start frame for S24 and S25.</p></div>
+
+<div class="kf"><header><span class="sid">K20</span><h4>Six amber pins at night</h4></header>
+<div class="pw"><pre data-style="E">The Living Tower at night: six bright amber glowing pins at Level 7, the crane zone at the base, Level 12, the Level 18 scaffold, Level 5 and the ground yard, against cyan linework and deep navy-black space. The amber pins are the brightest elements. Three-quarter view.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">S28 and S29 (reflected in Arai's glasses).</p></div>
+
+<div class="kf"><header><span class="sid">K21</span><h4>One cause</h4><span class="prio">PRIORITY</span></header>
+<div class="pw"><pre data-style="ED">The Living Tower at night: six amber pins have lifted off their floors and are tied together by fine cyan threads that all converge on the material hoist shaft, which blazes as a single brilliant column of light running the full height of the tower. Beside it hovers a large light-mode glass panel with a cyan edge. Awe-inspiring, centered.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">The centerpiece image (S30) and the poster frame.</p></div>
+
+<div class="kf"><header><span class="sid">K22</span><h4>Physical AI at night</h4><span class="chip vision">Vision</span></header>
+<div class="pw"><pre data-style="AB">Cinematic night still on a wet construction site: a low white autonomous pallet mover with a thin cyan light strip carries wrapped drywall into an open material hoist whose cyan status ring glows; moonlight, cyan reflections on the wet concrete, a white tower crane above. Matte white industrial design, no logos. 35mm low angle.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">Sets the look of the S32 units. Generate b, c and d from the same lighting.</p></div>
+
+<div class="kf"><header><span class="sid">K13–K14</span><h4>Headquarters and 「ヨシ!」</h4><span class="chip reuse">Reuse v1 base</span></header>
+<div class="pw"><pre data-style="AB">Edit prompt for K14: Arai pointing at dusk as before; add calm glowing cyan lines wrapping the tower beneath him and thin cyan threads reaching out across the Tokyo skyline to other construction sites lighting up in the distance.</pre><button class="copy" type="button">Copy</button></div>
+<p class="use">K13 is unchanged except that the wall display must be light mode.</p></div>
+
+<!-- ============ SCREEN SPEC ============ -->
+<h2 id="screens">Screen spec and accuracy gate (light mode)</h2>
+<p>Rename the screens to the real SuperApp names. Record every screen in light mode at 4K, with real cursor or touch movement, so post can track the recordings onto the devices and panels.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Shot</th><th>Screen</th><th>Content</th><th>Surface</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td class="m">S06</td><td>Live Site Map (RTLS)</td><td>Workers and equipment as live dots, floor drill-down</td><td>Tablet → floating panel</td><td>Today · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S07</td><td>Connected sources</td><td>Schedule, model, drawings</td><td>Twin panels</td><td>Demonstrated integrations only</td></tr>
+<tr><td class="m">S09</td><td>Schedule vs Actual</td><td>Planned vs observed by zone, plus insight card</td><td>Tablet</td><td>Today · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S14</td><td>Safety Events</td><td>Restricted entry, SOS, timestamps</td><td>Floating panel</td><td>Today · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S17</td><td>Environment</td><td>Wind 10-min average, affected scaffold, workers at height</td><td>Floating panel</td><td><span class="chip verify">Verify</span> data source</td></tr>
+<tr><td class="m">S22</td><td>Workforce</td><td>Heatmap by floor and trade, waiting-time insight</td><td>Tablet</td><td>Today · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S26</td><td>Assets</td><td>Tracked tool location</td><td>Phone</td><td>Today · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S27</td><td>Equipment utilization</td><td>Machine activity, hoist bookings</td><td>Monitor</td><td><span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S30</td><td>AI Insight: root cause</td><td>Linked effects, recommendation, Approve</td><td>Floating panel</td><td>Partly roadmap · <span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S32</td><td>Physical AI actions</td><td>Hoist, pallet mover, layout robot, quadruped, drone</td><td>Live footage</td><td><span class="chip vision">Vision</span></td></tr>
+<tr><td class="m">S33</td><td>Mobile status</td><td>L7 on plan, hoist slots, crew balance</td><td>Phone</td><td><span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S34</td><td>Safety history + equipment</td><td>Events closed, queue cleared</td><td>Monitor</td><td><span class="chip verify">Verify</span></td></tr>
+<tr><td class="m">S35</td><td>Management view</td><td>Project status, all resolved</td><td>Wall display</td><td>Only if demonstrated</td></tr>
+</tbody></table></div>
+<div class="note">Every number on screen (38%, 96%, 11.2 m/s, "3 days") is illustrative. Replace it with pilot data or keep it clearly generic. Decisions are always taken by a person; Physical AI acts only after Arai approves.</div>
+
+<h2 id="cut30">30-second exhibition / social cut</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Cut time</th><th>Shots</th><th>Beat</th></tr></thead>
+<tbody>
+<tr><td class="m">0:00–0:04</td><td class="m">S02</td><td>The still point</td></tr>
+<tr><td class="m">0:04–0:08</td><td class="m">S04 → S05</td><td>The site lights up and the tower comes alive</td></tr>
+<tr><td class="m">0:08–0:11</td><td class="m">S13 → S16</td><td>Geofence, then wind made visible</td></tr>
+<tr><td class="m">0:11–0:14</td><td class="m">S21</td><td>Movement trails</td></tr>
+<tr><td class="m">0:14–0:19</td><td class="m">S28 → S30</td><td>Six pins → one cause</td></tr>
+<tr><td class="m">0:19–0:24</td><td class="m">S31 → S32</td><td>Approve → Physical AI acts</td></tr>
+<tr><td class="m">0:24–0:27</td><td class="m">S36</td><td>「ヨシ!」, and the city lights up</td></tr>
+<tr><td class="m">0:27–0:30</td><td class="m">S37</td><td>End card</td></tr>
+</tbody></table></div>
+</main>
+</div>
+
+<script>
+(function(){
+  var pre1=['A','E','B'], post1=['C','D'];
+  var ids={A:'styleA',B:'styleB',C:'styleC',D:'styleD',E:'styleE'};
+  function get(k){var el=document.getElementById(ids[k]);return el?el.textContent.trim():'';}
+  function textFor(pre){
+    var t=pre.textContent.trim(), s=pre.getAttribute('data-style')||'';
+    var inc=document.getElementById('incStyle');
+    if(!s||!inc||!inc.checked) return t;
+    var parts=[];
+    pre1.forEach(function(k){if(s.indexOf(k)>-1) parts.push(get(k));});
+    parts.push(t);
+    post1.forEach(function(k){if(s.indexOf(k)>-1) parts.push(get(k));});
+    return parts.join('\n\n');
+  }
+  function selectText(el){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var pre=b.parentElement.querySelector('pre'); if(!pre) return;
+    var txt=textFor(pre);
+    function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok');},1400);}
+    try{navigator.clipboard.writeText(txt).then(done,function(){selectText(pre);b.textContent='Selected';});}
+    catch(err){selectText(pre);b.textContent='Selected';}
+  });
+})();
+</script>
