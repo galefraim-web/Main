@@ -1,0 +1,267 @@
+<title>SuperApp Film Preview Cut</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-page approval sheet. Timeline strip up top, then 11 beat cards, then the "ours" asset kit and the sign-off checklist. */
+:root{
+  --bg:#F1F4F4; --paper:#FFFFFF; --fg:#121C20; --muted:#56656B; --line:#D3DCDE;
+  --green:#0C7A4E; --amber:#B86E00; --cyan:#0A7C93; --slate:#55606B; --red:#B3261E; --violet:#5B4BB0;
+  --green-soft:#E2F0E8; --amber-soft:#F7ECD9; --cyan-soft:#DCF0F4; --slate-soft:#E7EAED; --red-soft:#F6E3E1; --violet-soft:#ECE9F8;
+  --code:#F6F8F8;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);font-weight:900;line-height:1.1}
+h1 .jp{display:block;font-size:.42em;font-weight:500;color:var(--muted);letter-spacing:.12em;margin-top:10px}
+h2{font-size:24px;font-weight:900;margin-top:48px;padding-top:18px;border-top:3px solid var(--fg)}
+h3{font-size:16px;font-weight:700;margin:22px 0 8px}
+p{margin:0 0 12px;max-width:72ch}
+.lede{font-size:17px;max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:16px 0 6px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:76ch}
+li{margin:4px 0}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip.wow{background:var(--fg);color:var(--bg)}
+.chip.ours{background:var(--amber);color:var(--paper)}
+.chip.vision{background:var(--violet);color:var(--paper)}
+.chip.src{background:var(--slate-soft);color:var(--slate)}
+/* timeline strip */
+.strip-wrap{overflow-x:auto;margin:22px 0 8px}
+.strip{display:grid;grid-template-columns:repeat(60,minmax(9px,1fr));min-width:640px;gap:0;border:1px solid var(--line);background:var(--paper)}
+.seg{padding:8px 6px;border-right:1px solid var(--line);font-size:11.5px;line-height:1.3;min-width:0;overflow:hidden}
+.seg:last-child{border-right:0}
+.seg b{display:block;font-family:var(--display);font-size:13px}
+.seg span{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.seg.w{background:var(--cyan-soft)}
+.seg.o{background:var(--amber-soft)}
+.seg.v{background:var(--violet-soft)}
+.strip-key{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted)}
+.sw{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:middle;border:1px solid var(--line)}
+.pw{position:relative;margin:10px 0}
+pre{font-family:var(--mono);font-size:12.8px;line-height:1.6;background:var(--code);border:1px solid var(--line);padding:14px 78px 14px 14px;margin:0;white-space:pre-wrap;word-wrap:break-word;color:var(--fg)}
+.copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;padding:4px 9px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer;border-radius:3px}
+.copy:hover{border-color:var(--fg)}
+.copy:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.copy.ok{background:var(--cyan);color:var(--paper);border-color:var(--cyan)}
+.toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:8px 0 0}
+.shot{background:var(--paper);border:1px solid var(--line);margin:14px 0;padding:14px 16px}
+.shot header{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.shot .sid{font-family:var(--display);font-weight:900;font-size:18px}
+.shot .tc{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.shot h4{font-size:16px;font-weight:700;flex:1 1 200px}
+.shot dl{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13.5px}
+@media (max-width:520px){.shot dl{grid-template-columns:minmax(0,1fr)}.shot dt{margin-top:6px}}
+.shot dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.shot dd{margin:0;min-width:0}
+.handoff{margin:10px 0 0;padding:8px 12px;background:var(--cyan-soft);font-size:13.5px;border-left:3px solid var(--cyan)}
+.handoff b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);margin-right:6px}
+.oursbox{border:1.5px solid var(--amber);padding:10px 12px;margin:10px 0 0;font-size:14px;background:var(--amber-soft)}
+.oursbox b{color:var(--amber)}
+.jpq{font-family:var(--display);font-weight:500}
+.tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:600px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.m{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.vo{background:var(--paper);border:1px solid var(--line);padding:14px 16px}
+.vo p{margin:0 0 6px}
+.vo .t{font-family:var(--mono);font-size:12px;color:var(--muted);display:inline-block;min-width:46px;font-variant-numeric:tabular-nums}
+.check li{list-style:none;margin-left:-20px;padding-left:26px;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;border:1.5px solid var(--muted);border-radius:2px}
+.note{border-left:3px solid var(--cyan);padding:10px 14px;background:var(--paper);margin:16px 0;max-width:80ch;font-size:14px}
+.note.warn{border-left-color:var(--red)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<main>
+<div class="eyebrow">Approval preview · 30 s · based on v2 flow</div>
+<h1>SuperApp Film Preview Cut<span class="jp">30秒プレビュー · 承認用ドラフト</span></h1>
+<div class="meta">
+  <span><b>30 s</b> · 11 beats · 7 of them wow beats</span>
+  <span><b>Draft:</b> 1080p, fast model, one take per beat</span>
+  <span><b>Ours:</b> 4 real assets (badge, 2 screens, logo)</span>
+</div>
+<p class="lede">A fast run through the full 3-minute arc, built almost entirely from the wow beats. It answers one question cheaply: does the flow work, and does the look hold up? If it does, generate the 3-minute film in high resolution. The real Trusstor and SuperApp material appears just four times, enough to make clear it's our product.</p>
+
+<!-- strip: 60 columns = 0.5 s each -->
+<div class="strip-wrap"><div class="strip" role="img" aria-label="30 second timeline of 11 beats">
+  <div class="seg w" style="grid-column:span 7"><b>P1</b><span>0:00 still point</span></div>
+  <div class="seg w" style="grid-column:span 5"><b>P2</b><span>0:03.5 SENSE</span></div>
+  <div class="seg o" style="grid-column:span 2"><b>P3</b><span>badge</span></div>
+  <div class="seg w" style="grid-column:span 5"><b>P4</b><span>0:07 tower alive</span></div>
+  <div class="seg o" style="grid-column:span 6"><b>P5</b><span>0:09.5 live map</span></div>
+  <div class="seg w" style="grid-column:span 5"><b>P6</b><span>0:12.5 wind</span></div>
+  <div class="seg w" style="grid-column:span 4"><b>P7</b><span>0:15 trails</span></div>
+  <div class="seg w" style="grid-column:span 8"><b>P8</b><span>0:17 six pins → one cause</span></div>
+  <div class="seg o" style="grid-column:span 5"><b>P9</b><span>0:21 insight · approve</span></div>
+  <div class="seg v" style="grid-column:span 5"><b>P10</b><span>0:23.5 Physical AI</span></div>
+  <div class="seg w" style="grid-column:span 5"><b>P11</b><span>0:26 ヨシ · city</span></div>
+  <div class="seg o" style="grid-column:span 3"><b>END</b><span>0:28.5</span></div>
+</div></div>
+<div class="strip-key">
+  <span><i class="sw" style="background:var(--cyan-soft)"></i>Wow beat (generated)</span>
+  <span><i class="sw" style="background:var(--amber-soft)"></i>Real Trusstor / SuperApp material</span>
+  <span><i class="sw" style="background:var(--violet-soft)"></i>Physical AI vision</span>
+</div>
+
+<h2>How to run the preview</h2>
+<ol>
+  <li><b>Optional, about 10 minutes:</b> generate the storyboard contact sheet below as a single image and approve the order and the look before any video is made.</li>
+  <li><b>Use the keyframes you already have</b> as start frames (the source shot in v2 is listed on each beat). Generate each beat as a 5 s draft clip at 1080p in Higgsfield's faster model, one take only, then trim to the beat's length.</li>
+  <li><b>Chain it:</b> where a hand-off says so, use the last frame of one clip as the start frame of the next. That is the flow you're testing.</li>
+  <li><b>Comp the 4 real assets roughly:</b> a simple corner-pin in CapCut or Resolve is enough at this stage. No polish.</li>
+  <li><b>Put it on a temp music track</b> with the three drops at 0:17, 0:22.5 and 0:26, and record the VO yourself or with TTS.</li>
+</ol>
+
+<label class="toggle"><input type="checkbox" id="incStyle" checked> Add the short preview style prompt when copying</label>
+<h3>Preview style prompt (short)</h3>
+<div class="pw"><pre id="styleP">Photorealistic ultra-detailed cinematic film, ARRI Alexa large-format anamorphic look, near-future Tokyo high-rise construction site, immaculate and orderly, Japanese workers in authentic workwear with sleek smart badges glowing soft cyan. Elegant glowing cyan connectivity lines with soft bloom and travelling light particles, depth-correct, high-end technology product film. No text, no logos, no user interface.</pre><button class="copy" type="button">Copy</button></div>
+<h3>Living Tower style (P8)</h3>
+<div class="pw"><pre id="styleE">AI illustration: a 30-storey tower as a luminous digital twin of clear glass and fine cyan linework floating in deep navy-black space, tiny light particles for people and machines, soft volumetric glow, isometric precision, cinematic depth of field. No text.</pre><button class="copy" type="button">Copy</button></div>
+<h3>Negative prompt</h3>
+<div class="pw"><pre id="negative">cartoon, anime, video game look, plastic CGI, cluttered sci-fi HUD, neon cyberpunk, purple glow, distorted faces, extra fingers, changing character face, missing helmet, generated user interface, readable text, gibberish kanji, logos, watermarks, subtitles, oversaturated colors, stock footage look</pre><button class="copy" type="button">Copy</button></div>
+
+<h3>Storyboard contact sheet (one image, before any video)</h3>
+<div class="pw"><pre>A cinematic storyboard contact sheet, 3 by 4 grid of twelve 16:9 photorealistic film frames on a dark grey board, thin white gutters, no text. 1: a site manager in a white helmet standing perfectly still at the centre of an open concrete floor while workers blur around him in time-lapse. 2: a morning assembly of construction workers frozen mid-stretch, cyan pulse rings spreading from their chest badges. 3: macro of a small sleek badge on a harness strap glowing cyan. 4: cyan light particles climbing the facade of a Tokyo high-rise under construction at dawn. 5: a frosted white glass panel floating above a tablet in a glass site office. 6: cyan wind streamlines wrapping a tower corner past billowing green scaffold mesh. 7: top-down concrete slab covered in glowing cyan movement trails knotted at a hoist. 8: a glass-and-cyan digital twin tower in dark space, six amber pins joined by cyan threads converging on one glowing vertical shaft. 9: a finger tapping a floating white glass panel, a cyan ripple spreading. 10: a white autonomous pallet mover carrying drywall into a construction hoist at night, cyan light strip. 11: the site manager pointing across Tokyo at dusk, cyan threads spreading from the tower to other sites, Mt. Fuji silhouette. 12: a plain dark frame with a single thin cyan line.</pre><button class="copy" type="button">Copy</button></div>
+
+<h2>The 11 beats</h2>
+
+<article class="shot"><header><span class="sid">P1</span><span class="tc">0:00–0:03.5</span><span class="chip wow">Wow</span><h4>The still point</h4><span class="chip src">v2 S02 · K04</span></header>
+<div class="pw"><pre data-style="P">Locked-off symmetrical wide shot of an open concrete floor of a Tokyo high-rise under construction. A Japanese site manager in a white helmet, grey work jacket and glasses stands perfectly still in the centre in real time, while everything around him races in time-lapse: crews arrive and relocate, a scissor lift crosses, pallets appear and vanish, sunlight sweeps from morning to evening across the slab. Then the light snaps back to dawn and everything freezes. 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>Frozen dawn floor. Hard cut on the music's first beat to P2.</div>
+<dl><dt>VO</dt><dd>"On a construction site, nothing stands still."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P2</span><span class="tc">0:03.5–0:06</span><span class="chip wow">Wow</span><h4>SENSE: the site lights up</h4><span class="chip src">v2 S04 · K06</span></header>
+<div class="pw"><pre data-style="P">Morning assembly of forty Japanese construction workers doing synchronized stretches slows to near stillness, arms raised. Every chest badge lights soft cyan and gentle cyan pulse rings ripple across the crowd like water; glowing cyan outlines trace the tower cranes and the material hoist behind them. Slow push-in, 35mm, 60 fps.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>Push in on one worker's chest badge, then MATCH to the real badge macro in P3.</div></article>
+
+<article class="shot"><header><span class="sid">P3</span><span class="tc">0:06–0:07</span><span class="chip ours">Ours</span><h4>The real badge</h4></header>
+<div class="oursbox"><b>Real asset 1: Trusstor smart badge.</b> A 1 s macro of the actual badge on a harness strap. Either a real product photo with a slow 2D push and a cyan rim light added in post, or comp the real badge onto the badge in a generated macro plate. This is the first "this is ours" moment.</div>
+<div class="pw"><pre data-style="P">Extreme macro of a small black rectangular badge clipped to a harness chest strap, a soft cyan light pulsing once on its edge, shallow depth of field, workers blurred behind. 100mm macro.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The pulse from the badge becomes rising particles, carried into P4.</div></article>
+
+<article class="shot"><header><span class="sid">P4</span><span class="tc">0:07–0:09.5</span><span class="chip wow">Wow</span><h4>The tower comes alive</h4><span class="chip src">v2 S05</span></header>
+<div class="pw"><pre data-style="P">The camera rises fast with thousands of cyan light particles streaming up the facade of a 30-storey Tokyo tower under construction at dawn; glowing cyan lines trace its columns and slabs floor by floor until the whole tower is wrapped in its own luminous outline. At the top the streams arc down toward a glass-walled site office. Fast vertical drone rise, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The streams pour through the office glass onto the tablet in P5.</div>
+<dl><dt>VO</dt><dd>"SuperApp senses every crew, every machine, every zone…"</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P5</span><span class="tc">0:09.5–0:12.5</span><span class="chip ours">Ours</span><span class="chip wow">Wow</span><h4>The live site map</h4><span class="chip src">v2 S06 · K17</span></header>
+<div class="pw"><pre data-style="P">Inside a glass site office at dawn, the site manager holds a tablet as cyan streams land on it; a large frosted white light-mode glass panel unfolds smoothly into the air above the tablet, with a fine cyan edge and a blank pale content area with four tracking dots. Cool white light on his face, the glowing tower through the window. 50mm push toward the panel.</pre><button class="copy" type="button">Copy</button></div>
+<div class="oursbox"><b>Real asset 2: SuperApp Live Site Map (RTLS), light mode.</b> A 3 s screen recording with workers and equipment as live dots, tracked onto the floating panel. Choose a moment where the dots are visibly moving.</div>
+<div class="handoff"><b>Hand-off</b>Push through the panel; whip-pan to the tower exterior for P6.</div>
+<dl><dt>VO</dt><dd>"…and connects it to the plan."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P6</span><span class="tc">0:12.5–0:15</span><span class="chip wow">Wow</span><h4>Wind made visible</h4><span class="chip src">v2 S16 · K09</span></header>
+<div class="pw"><pre data-style="P">An external scaffold high on a Tokyo tower under construction, green mesh sheets billowing hard, workers in harnesses clipped to the rail. The wind itself appears as translucent flowing cyan streamlines wrapping and swirling around the tower corner; one streamline flares amber for a moment. Drone orbit around the corner, 35mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The streamlines sweep down the facade into a top-down view of a slab (P7).</div>
+<dl><dt>VO</dt><dd>"Safety. People. Machines."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P7</span><span class="tc">0:15–0:17</span><span class="chip wow">Wow</span><h4>Movement made visible</h4><span class="chip src">v2 S21 · K18</span></header>
+<div class="pw"><pre data-style="P">Top-down view over an open concrete slab: time accelerates and every worker leaves a glowing cyan light trail, drawing long looping paths across the floor and a dense bright knot of tangled trails at the closed material hoist doors where drywall pallets wait. Slow rotation, 24mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>The knot glows amber and the camera pulls back fast into the twin (P8).</div>
+<dl><dt>VO</dt><dd>"Every signal, live."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P8</span><span class="tc">0:17–0:21</span><span class="chip wow">Wow</span><h4>Six pins → one cause</h4><span class="chip src">v2 S28 + S30 · K20, K21</span></header>
+<div class="pw"><pre data-style="E">Inside the luminous glass-and-cyan digital twin tower at night, six amber glowing pins sit on different floors. They lift gently and fine cyan threads connect them one by one, then every thread converges on the material hoist shaft, which ignites into a single brilliant column of light running the full height of the tower. Slow orbit, then settle frontal.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>A light-mode panel unfolds beside the glowing shaft (P9).</div>
+<dl><dt>Score</dt><dd><b>Drop 1</b> at 0:17: silence, then a rising swell.</dd><dt>VO</dt><dd>"AI connects every signal to the one cause behind them."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P9</span><span class="tc">0:21–0:23.5</span><span class="chip ours">Ours</span><h4>The insight, and one tap</h4><span class="chip src">v2 S30b + S31</span></header>
+<div class="pw"><pre data-style="P">Extreme close-up: the site manager's finger hovers in front of a floating frosted white light-mode glass panel, pauses for one breath and taps; a ripple of cyan light spreads across the panel from his fingertip. Rack focus to his calm face, glasses reflecting the glow. 100mm, 60 fps.</pre><button class="copy" type="button">Copy</button></div>
+<div class="oursbox"><b>Real asset 3: SuperApp insight screen, light mode.</b> 1.5 s of the real Schedule vs Actual or AI insight view, comped onto the panel just before the tap. If there's no real Approve button, add it as a clearly separate post overlay. <span class="chip vision">Vision</span></div>
+<div class="handoff"><b>Hand-off</b>The cyan ripple races out of the frame into the night yard (P10).</div>
+<dl><dt>Score</dt><dd><b>Drop 2</b> at 0:22.5: one soft tap, then full drive.</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P10</span><span class="tc">0:23.5–0:26</span><span class="chip vision">Vision</span><span class="chip wow">Wow</span><h4>Physical AI acts</h4><span class="chip src">v2 S32a + S32b · K22</span></header>
+<div class="pw"><pre data-style="P">Night on a wet construction site: a low matte-white autonomous pallet mover with a thin cyan light strip glides a stack of wrapped drywall into an open material hoist, whose cyan status ring lights as the doors close. Cut on motion: a compact white layout robot drives across a clean concrete slab drawing precise cyan-lit lines. Moonlight, cyan reflections on wet concrete. 35mm low angle, then top-down.</pre><button class="copy" type="button">Copy</button></div>
+<div class="handoff"><b>Hand-off</b>A sunrise flare across the lens, then a jump to dusk for P11.</div>
+<dl><dt>VO</dt><dd>"Then turns understanding into action."</dd></dl></article>
+
+<article class="shot"><header><span class="sid">P11</span><span class="tc">0:26–0:28.5</span><span class="chip wow">Wow</span><h4>「ヨシ!」, and the city lights up</h4><span class="chip src">v2 S36 · K14</span></header>
+<div class="pw"><pre data-style="P">Dusk on the top floor of a Tokyo tower under construction: the site manager raises his arm and points firmly across the site in the Japanese pointing-and-calling gesture. A drone pulls back and rises: the tower is wrapped in calm cyan light, and cyan threads reach out across the skyline to other construction sites, which light up one by one toward Tokyo Skytree and Mt. Fuji in an orange-violet sky.</pre><button class="copy" type="button">Copy</button></div>
+<dl><dt>Dialogue</dt><dd><span class="jpq">「ヨシ!」</span> (all clear)</dd><dt>Score</dt><dd><b>Drop 3</b> at 0:26: a beat of silence for the line, then the final hit.</dd></dl>
+<div class="handoff"><b>Hand-off</b>The city network contracts into a single cyan line, which draws the logo.</div></article>
+
+<article class="shot"><header><span class="sid">END</span><span class="tc">0:28.5–0:30</span><span class="chip ours">Ours</span><h4>End card</h4></header>
+<div class="oursbox"><b>Real asset 4: SuperApp logo</b> (with Trusstor). Drawn by the cyan line. <i>From Physical Reality to Digital Intelligence.</i></div></article>
+
+<h2>Narration (30 s)</h2>
+<div class="vo">
+<p><span class="t">0:00.5</span>On a construction site, nothing stands still.</p>
+<p><span class="t">0:07.5</span>SuperApp senses every crew, every machine, every zone,</p>
+<p><span class="t">0:10.5</span>and connects it to the plan.</p>
+<p><span class="t">0:13</span>Safety. People. Machines.</p>
+<p><span class="t">0:15.5</span>Every signal, live.</p>
+<p><span class="t">0:18</span>AI connects every signal to the one cause behind them.</p>
+<p><span class="t">0:22.5</span><i>(silence: the tap)</i></p>
+<p><span class="t">0:23.5</span>Then turns understanding into action.</p>
+<p><span class="t">0:26</span><span class="jpq">「ヨシ!」</span></p>
+<p><span class="t">0:28.5</span>SuperApp. From physical reality to digital intelligence.</p>
+</div>
+
+<h2>"Ours" asset kit (only four)</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Beat</th><th>Asset</th><th>Length</th><th>What to send post</th></tr></thead>
+<tbody>
+<tr><td class="m">P3</td><td>Trusstor smart badge</td><td class="m">1 s</td><td>Product photo on a clean background, or the 3D render</td></tr>
+<tr><td class="m">P5</td><td>Live Site Map (RTLS), light mode</td><td class="m">3 s</td><td>4K screen recording with dots moving, no cursor</td></tr>
+<tr><td class="m">P9</td><td>Schedule vs Actual or AI insight, light mode</td><td class="m">1.5 s</td><td>4K screen recording, one deviation visible</td></tr>
+<tr><td class="m">END</td><td>SuperApp + Trusstor logos</td><td class="m">1.5 s</td><td>SVG</td></tr>
+</tbody></table></div>
+<div class="note warn">Use the real UI only. Never let Higgsfield generate the screen, badge or logo. Two seconds of the real thing does more than thirty seconds of convincing fakes.</div>
+
+<h2>Sign-off checklist</h2>
+<p>What to judge on the preview (with Omri) before the high-resolution run:</p>
+<ul class="check">
+  <li><b>Flow:</b> does it play as one continuous movement, with no beat that feels like a jump? Watch the hand-offs P2→P3, P5→P6 and P8→P9.</li>
+  <li><b>Glow level:</b> is the cyan elegant and premium (P2, P6, P7), or too sci-fi? Adjust Style B before the full run.</li>
+  <li><b>Ours:</b> are the badge, the two screens and the logo clearly recognizable, and do the light-mode panels read well?</li>
+  <li><b>Story:</b> does a first-time viewer get "problems → one cause → action" from P7, P8, P9 and P10 alone?</li>
+  <li><b>Physical AI:</b> are the robots in P10 credible, and is a "next" label needed?</li>
+  <li><b>Cast:</b> does Arai's Soul ID hold across P1, P5, P9 and P11?</li>
+  <li><b>Tone:</b> does 「ヨシ!」 land as sincere and quietly proud rather than comic?</li>
+</ul>
+<p>Once it's approved, every beat maps one-to-one to its v2 shot, so the preview's prompts, keyframes and hand-offs carry straight into the 3-minute film.</p>
+</main>
+</div>
+
+<script>
+(function(){
+  var ids={P:'styleP',E:'styleE'};
+  function get(k){var el=document.getElementById(ids[k]);return el?el.textContent.trim():'';}
+  function textFor(pre){
+    var t=pre.textContent.trim(), s=pre.getAttribute('data-style')||'';
+    var inc=document.getElementById('incStyle');
+    if(!s||!inc||!inc.checked) return t;
+    return get(s)+'\n\n'+t;
+  }
+  function selectText(el){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.copy'); if(!b) return;
+    var pre=b.parentElement.querySelector('pre'); if(!pre) return;
+    var txt=textFor(pre);
+    function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok');},1400);}
+    try{navigator.clipboard.writeText(txt).then(done,function(){selectText(pre);b.textContent='Selected';});}
+    catch(err){selectText(pre);b.textContent='Selected';}
+  });
+})();
+</script>
