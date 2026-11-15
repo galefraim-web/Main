@@ -1,0 +1,361 @@
+<title>SuperApp Film Production Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the single source of truth. Sticky rail of steps; Global section first, then one section per 30 s block, each as numbered steps (characters → keyframes → block prompt → post → check). */
+:root{
+  --bg:#F1F4F4; --paper:#FFFFFF; --fg:#121C20; --muted:#56656B; --line:#D3DCDE;
+  --green:#0C7A4E; --amber:#B86E00; --cyan:#0A7C93; --slate:#55606B; --red:#B3261E; --violet:#5B4BB0;
+  --green-soft:#E2F0E8; --amber-soft:#F7ECD9; --cyan-soft:#DCF0F4; --slate-soft:#E7EAED; --red-soft:#F6E3E1; --violet-soft:#ECE9F8;
+  --code:#F6F8F8;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1417; --paper:#141D21; --fg:#E4EDEF; --muted:#93A4AA; --line:#28363B;
+  --green:#4FC38F; --amber:#E2A245; --cyan:#4CCBE3; --slate:#A3AEB8; --red:#F08A80; --violet:#A99BF0;
+  --green-soft:#16302A; --amber-soft:#33281A; --cyan-soft:#112F37; --slate-soft:#242C33; --red-soft:#361E1C; --violet-soft:#26223F;
+  --code:#10181B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px;display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.rail{display:none}}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;font-size:13px}
+.rail a{display:flex;gap:8px;color:var(--muted);text-decoration:none;padding:4px 0 4px 10px;border-left:2px solid var(--line)}
+.rail a:hover,.rail a:focus-visible{color:var(--fg);border-left-color:var(--cyan)}
+.rail .tcs{font-family:var(--mono);font-size:11px;min-width:40px}
+.rail .grp{font-family:var(--display);font-weight:700;color:var(--fg);margin:16px 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.rail .next{color:var(--muted);padding:4px 0 4px 10px;border-left:2px dashed var(--line);font-size:12.5px}
+main{min-width:0}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,44px);font-weight:900;line-height:1.1}
+h1 .jp{display:block;font-size:.42em;font-weight:500;color:var(--muted);letter-spacing:.12em;margin-top:10px}
+h2{font-size:26px;font-weight:900;margin-top:56px;padding-top:20px;border-top:3px solid var(--fg);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+h2 .tc{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--muted)}
+h3{font-size:19px;font-weight:900;margin:36px 0 10px;display:flex;gap:12px;align-items:baseline}
+h3 .n{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--paper);background:var(--cyan);padding:2px 8px;border-radius:3px;letter-spacing:.06em}
+h4{font-size:16px;font-weight:700}
+p{margin:0 0 12px;max-width:72ch}
+.lede{font-size:17px;max-width:68ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+ul,ol{margin:0 0 12px;padding-left:20px;max-width:78ch}
+li{margin:4px 0}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.chip.ready{background:var(--green-soft);color:var(--green)}
+.chip.soon{background:var(--slate-soft);color:var(--slate)}
+.chip.ours{background:var(--amber);color:var(--paper)}
+.chip.wow{background:var(--fg);color:var(--bg)}
+.chip.vision{background:var(--violet);color:var(--paper)}
+.chip.verify{background:var(--red-soft);color:var(--red)}
+.chip.ref{background:var(--cyan-soft);color:var(--cyan)}
+.status{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.status span{display:flex;gap:6px;align-items:center;font-size:13px;background:var(--paper);border:1px solid var(--line);padding:6px 10px}
+.status b{font-family:var(--mono);font-size:12px}
+.note{border-left:3px solid var(--cyan);padding:10px 14px;background:var(--paper);margin:16px 0;max-width:80ch;font-size:14px}
+.note.warn{border-left-color:var(--red)}
+.pw{position:relative;margin:10px 0}
+pre{font-family:var(--mono);font-size:12.8px;line-height:1.62;background:var(--code);border:1px solid var(--line);padding:14px 82px 14px 14px;margin:0;white-space:pre-wrap;word-wrap:break-word;color:var(--fg)}
+.main pre{border:1.5px solid var(--cyan)}
+.copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;padding:4px 9px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer;border-radius:3px}
+.copy:hover{border-color:var(--fg)}
+.copy:focus-visible,.rail a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.copy.ok{background:var(--cyan);color:var(--paper);border-color:var(--cyan)}
+.card{background:var(--paper);border:1px solid var(--line);margin:14px 0;padding:14px 16px}
+.card header{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:4px}
+.card .sid{font-family:var(--display);font-weight:900;font-size:17px}
+.card h4{flex:1 1 200px}
+.card dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13.5px}
+@media (max-width:520px){.card dl{grid-template-columns:minmax(0,1fr)}.card dt{margin-top:6px}}
+.card dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.card dd{margin:0;min-width:0}
+.how{font-size:13.5px;color:var(--muted);margin:6px 0 0}
+.how b{color:var(--fg)}
+.oursbox{border:1.5px solid var(--amber);padding:10px 12px;margin:10px 0 0;font-size:14px;background:var(--amber-soft)}
+.oursbox b{color:var(--amber)}
+.handoff{margin:10px 0 0;padding:8px 12px;background:var(--cyan-soft);font-size:13.5px;border-left:3px solid var(--cyan)}
+.handoff b{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);margin-right:6px}
+.tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.m{font-family:var(--mono);font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pin{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.pin.o{background:var(--amber)} .pin.r{background:var(--cyan)}
+.vo p{margin:0 0 6px}
+.vo .t{font-family:var(--mono);font-size:12px;color:var(--muted);display:inline-block;min-width:46px;font-variant-numeric:tabular-nums}
+.jpq{font-family:var(--display);font-weight:500}
+.check li{list-style:none;margin-left:-20px;padding-left:26px;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;border:1.5px solid var(--muted);border-radius:2px}
+.order{counter-reset:o;list-style:none;padding:0;display:grid;gap:6px;max-width:80ch}
+.order li{counter-increment:o;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;background:var(--paper);border:1px solid var(--line);padding:8px 12px;margin:0;font-size:14px}
+.order li::before{content:counter(o);font-family:var(--mono);font-weight:500;color:var(--cyan)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<nav class="rail" aria-label="Sections">
+  <div class="grp">Global</div>
+  <a href="#story"><span class="tcs">—</span>The film</a>
+  <a href="#rules"><span class="tcs">—</span>Generation rules</a>
+  <a href="#styles"><span class="tcs">A–E</span>Style prompts</a>
+  <a href="#refs"><span class="tcs">@</span>Reference library</a>
+  <div class="grp">Block 1 <span class="chip ready">Ready</span></div>
+  <a href="#b1"><span class="tcs">0:00</span>Overview</a>
+  <a href="#b1-s1"><span class="tcs">1</span>Characters</a>
+  <a href="#b1-s2"><span class="tcs">2</span>Keyframes</a>
+  <a href="#b1-s3"><span class="tcs">3</span>30 s prompt</a>
+  <a href="#b1-s4"><span class="tcs">4</span>Post</a>
+  <a href="#b1-s5"><span class="tcs">5</span>Check &amp; hand-off</a>
+  <div class="grp">Next</div>
+  <div class="next">Block 2 · 0:30 Connect · Control</div>
+  <div class="next">Block 3 · 1:00 Safety</div>
+  <div class="next">Block 4 · 1:30 Labor · Equipment</div>
+  <div class="next">Block 5 · 2:00 Understand</div>
+  <div class="next">Block 6 · 2:30 Act · Resolve</div>
+</nav>
+
+<main>
+<div class="eyebrow">Single source of truth · Higgsfield production · 180 s</div>
+<h1>SuperApp Film Production Guide<span class="jp">フィジカルAIで、現場の今を経営の判断へ</span></h1>
+<div class="meta">
+  <span><b>180 s</b> · six 30 s blocks · 37 shots</span>
+  <span><b>16:9</b> · 4K · 24 fps (60 fps on slow-motion shots)</span>
+  <span><b>Screens:</b> real SuperApp UI, light mode, added in post</span>
+</div>
+<p class="lede">This guide is everything you need to make the film. Work through it from top to bottom: the global section once, then one block at a time. Each block follows the same five steps: new characters, keyframes, the 30-second prompt, post, then a check and a hand-off frame that starts the next block.</p>
+<div class="status">
+  <span><b>Block 1</b><i class="chip ready">Ready</i></span>
+  <span><b>Block 2</b><i class="chip soon">Next</i></span>
+  <span><b>Block 3</b><i class="chip soon">—</i></span>
+  <span><b>Block 4</b><i class="chip soon">—</i></span>
+  <span><b>Block 5</b><i class="chip soon">—</i></span>
+  <span><b>Block 6</b><i class="chip soon">—</i></span>
+</div>
+
+<!-- ================= GLOBAL ================= -->
+<h2 id="story">The film in one minute</h2>
+<p>One Tokyo tower, one day, one continuous journey. Arai, the site manager, is the calm still point. A cyan signal thread carries the camera from each scene into the next. Every challenge on site leaves a glowing amber pin on the <b>Living Tower</b>, a digital twin of the building. AI connects the six pins to one cause (the material hoist), Arai approves the plan, and Physical AI acts overnight. The next morning every pin turns cyan, and at dusk the change spreads across the city.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Block</th><th>Time</th><th>Story</th><th>Clock</th><th>Tower pins</th></tr></thead>
+<tbody>
+<tr><td class="m">1</td><td class="m">0:00–0:30</td><td>The site wakes; SENSE: the site and tower light up; the live site map</td><td class="m">05:50–06:40</td><td>—</td></tr>
+<tr><td class="m">2</td><td class="m">0:30–1:00</td><td>CONNECT: the Living Tower; Level 7 plan vs reality</td><td class="m">08:40</td><td><span class="pin o"></span></td></tr>
+<tr><td class="m">3</td><td class="m">1:00–1:30</td><td>Safety: crane geofence, SOS, wind at height</td><td class="m">11:05</td><td><span class="pin o"></span><span class="pin o"></span><span class="pin o"></span><span class="pin o"></span></td></tr>
+<tr><td class="m">4</td><td class="m">1:30–2:00</td><td>Labor at the hoist; equipment in the yard</td><td class="m">13:30–15:10</td><td>+1</td></tr>
+<tr><td class="m">5</td><td class="m">2:00–2:30</td><td>Assets found; six pins; UNDERSTAND: one cause</td><td class="m">15:20–21:40</td><td>6 amber → linked</td></tr>
+<tr><td class="m">6</td><td class="m">2:30–3:00</td><td>Approve; Physical AI acts; resolved on site, office and HQ; 「ヨシ!」</td><td class="m">21:42 → next day</td><td><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span><span class="pin r"></span></td></tr>
+</tbody></table></div>
+
+<h2 id="rules">Generation rules (every block)</h2>
+<ol>
+  <li><b>Characters come first.</b> Build a Soul ID from each character's reference set before generating any shot they appear in. New characters are introduced in the block where they first appear.</li>
+  <li><b>Keyframes before video.</b> Every block's keyframes are generated and approved as stills first. They become the start frames, end frames and image references for that block's prompt.</li>
+  <li><b>One prompt per block.</b> Each block has a full 30-second multi-shot prompt. If your model caps clip length, use the 3-part split underneath it, chaining the parts with the last frame of each.</li>
+  <li><b>Chain the blocks.</b> The last frame of each block is exported as <code>B#-END</code> and used as the first frame of the next. This is what makes the 3 minutes play as one movement.</li>
+  <li><b>Never generate our real material.</b> The SuperApp UI, the Trusstor badge close-ups, logos, kanji and on-screen text are added in post. Devices and panels are generated blank with tracking dots.</li>
+  <li><b>Negative prompt every time.</b> Until Block 6, also add "robots, autonomous machines" to it.</li>
+</ol>
+
+<h2 id="styles">Style prompts</h2>
+<p>The block prompts already include these. They're listed here so you can fix a shot or a keyframe on its own.</p>
+<div class="card"><header><span class="sid">A</span><h4>Ultra-real near-future live action</h4></header>
+<div class="pw"><pre>Photorealistic, ultra-detailed cinematic live action, ARRI Alexa 65 large-format look with anamorphic lenses, 24 fps, 4K HDR, subtle film grain, natural skin pores and fabric texture, realistic physics, motion blur and lens behaviour. Setting: an immaculate, orderly 30-storey high-rise construction site in central Tokyo in the near future: white perimeter panels, green scaffold mesh sheets, white tower cranes, a glass-walled site office, clean exposed concrete slabs. Japanese workers in authentic site workwear (white or yellow helmets with chin straps, full-body harnesses, tobi trousers, long-sleeve work jackets), each wearing a small sleek black smart badge on the harness strap with a soft cyan status light. Premium product-film composition, calm, confident, awe-inspiring and real.</pre><button class="copy" type="button">Copy</button></div></div>
+<div class="card"><header><span class="sid">B</span><h4>Cyan connectivity layer</h4></header>
+<div class="pw"><pre>A luminous cyan connectivity layer integrated into the real scene: thin glowing cyan lines with a soft bloom, small light particles travelling along them, gentle pulse rings expanding from smart badges, glowing contour outlines on machines and work zones. The light is depth-correct, passing behind and in front of objects and reflecting faintly on wet concrete, glass and helmets. Elegant, sparse, high-end technology product film. No sci-fi HUD clutter, no text, no numbers.</pre><button class="copy" type="button">Copy</button></div></div>
+<div class="card"><header><span class="sid">C</span><h4>Device screen, light mode</h4></header>
+<div class="pw"><pre>The device screen glows bright white in light mode: a blank pale-grey interface area with four small dark tracking dots in its corners, no readable text, ready for screen replacement. Cool white screen light falls on the face and hands, with natural reflections on the glass.</pre><button class="copy" type="button">Copy</button></div></div>
+<div class="card"><header><span class="sid">D</span><h4>Floating light-mode glass panels</h4></header>
+<div class="pw"><pre>Thin frosted-glass interface panels float in the air in front of the character in light mode: bright white surfaces with soft drop shadows and a fine glowing cyan edge, blank content areas with four small tracking dots for screen replacement. The panels unfold smoothly from the device like folding paper, with realistic depth of field, parallax and reflections. No readable text.</pre><button class="copy" type="button">Copy</button></div></div>
+<div class="card"><header><span class="sid">E</span><h4>The Living Tower (AI illustration world)</h4></header>
+<div class="pw"><pre>AI illustration world: a 30-storey tower rendered as a luminous digital twin of clear glass and fine cyan linework, floating in deep navy-black space. Floor slabs are thin glowing planes, people and machines are tiny particles of light, with soft volumetric glow, isometric precision and cinematic shallow depth of field. Amber glowing pins mark open issues and cyan pins mark resolved ones. Premium, calm, awe-inspiring. No text.</pre><button class="copy" type="button">Copy</button></div></div>
+<div class="card"><header><span class="sid">NEG</span><h4>Negative prompt</h4></header>
+<div class="pw"><pre>cartoon, anime, video game look, plastic CGI look, cluttered sci-fi HUD, neon cyberpunk, purple or pink glow, plain hard cuts, slideshow transitions, distorted faces, extra or missing fingers, changing character face or clothing, missing helmet, worker at height without harness, messy or dirty site, dark-mode user interface, generated user interface, readable generated text, gibberish kanji, logos, watermarks, burned-in subtitles, oversaturated colors, excessive lens flare, stock footage look, robots, autonomous machines</pre><button class="copy" type="button">Copy</button></div>
+<p class="how">Remove <b>"robots, autonomous machines"</b> only for Block 6.</p></div>
+
+<h2 id="refs">Reference library</h2>
+<p>These are the names used in every prompt in this guide. Each reference is created once, in the block where it first appears, and reused from then on.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Tag</th><th>What it is</th><th>Created in</th><th>Used in</th></tr></thead>
+<tbody>
+<tr><td class="m">@Badge</td><td>Photo of the real Trusstor smart badge (from the product team, not generated)</td><td>Block 1 · Step 1</td><td>All blocks</td></tr>
+<tr><td class="m">@Arai</td><td>Soul ID: site manager</td><td>Block 1 · Step 1</td><td>All blocks</td></tr>
+<tr><td class="m">@Mori</td><td>Soul ID: foreman</td><td>Block 1 · Step 1</td><td>Blocks 1–4, 6</td></tr>
+<tr><td class="m">@Glow</td><td>KF-04: master reference for the cyan layer's intensity</td><td>Block 1 · Step 2</td><td>All blocks</td></tr>
+<tr><td class="m">@Panel</td><td>KF-06: master reference for the floating light-mode panel</td><td>Block 1 · Step 2</td><td>Blocks 1–6</td></tr>
+<tr><td class="m">@Tower</td><td>KF-05: the real tower wrapped in cyan (exterior look)</td><td>Block 1 · Step 2</td><td>Blocks 1, 3, 6</td></tr>
+<tr><td class="m">@Twin</td><td>The Living Tower</td><td>Block 2</td><td>Blocks 2–6</td></tr>
+<tr><td class="m">@Exec</td><td>Soul ID: headquarters executive</td><td>Block 6</td><td>Block 6</td></tr>
+</tbody></table></div>
+
+<!-- ================= BLOCK 1 ================= -->
+<h2 id="b1">Block 1 · The site wakes, the site is sensed <span class="tc">0:00–0:30</span></h2>
+<p><b>Story:</b> one tower, one man, one clock. The day races around Arai while he stays still. At the morning assembly every badge lights up cyan (SENSE), light climbs the tower until the whole building is outlined, and it flows into Arai's tablet as the live site map. That last image hands off to the Living Tower at the start of Block 2.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Shot</th><th>Time</th><th>Beat</th><th>Keyframe</th></tr></thead>
+<tbody>
+<tr><td class="m">1.1</td><td class="m">0:00–0:06</td><td>Tokyo at 05:50: a drone glide to Arai on the roof</td><td>KF-01</td></tr>
+<tr><td class="m">1.2</td><td class="m">0:06–0:12</td><td><b>Wow:</b> the still point, a day of time-lapse around a motionless Arai</td><td>KF-02</td></tr>
+<tr><td class="m">1.3</td><td class="m">0:12–0:15</td><td>The question: Arai looks down at the gathering crew</td><td>KF-02</td></tr>
+<tr><td class="m">1.4</td><td class="m">0:15–0:21</td><td><b>Wow:</b> SENSE, every badge lights up across the assembly, ending on a badge macro</td><td>KF-03 → KF-04, KF-07</td></tr>
+<tr><td class="m">1.5</td><td class="m">0:21–0:26</td><td><b>Wow:</b> the tower comes alive with climbing light</td><td>KF-05</td></tr>
+<tr><td class="m">1.6</td><td class="m">0:26–0:30</td><td>The live site map unfolds from Arai's tablet</td><td>KF-06</td></tr>
+</tbody></table></div>
+
+<!-- STEP 1 -->
+<h3 id="b1-s1"><span class="n">STEP 1</span>Characters: Arai and Mori</h3>
+<p>Each Soul ID is built from six reference images. Generate image 1 first, then attach it as a reference for images 2–6 so the face stays the same. Keep the best 5–6 images and create the Soul ID in Higgsfield (Character → Soul ID → upload). Use the same image settings for all of them: photorealistic, 4:5 for portraits, 9:16 for full body.</p>
+
+<div class="oursbox"><b>Before you start, get @Badge:</b> ask the product team for a clean photo of the real Trusstor smart badge, front and side, on a neutral background. Attach it as a reference to every character image so the badge looks like ours from the first frame.</div>
+
+<div class="card"><header><span class="sid">ARAI</span><h4>Site manager (所長): calm, observant, the still point</h4><span class="chip ref">@Arai</span></header>
+<dl><dt>Look</dt><dd>Japanese man, late 40s, short black hair greying at the temples, clean-shaven, thin dark-rimmed rectangular glasses. White helmet with a black chin strap, light-grey zip work jacket, navy work trousers, black safety shoes, plain white armband on the left upper arm, @Badge clipped at chest height, slim rugged tablet.</dd>
+<dt>Acting</dt><dd>Composed, with micro-expressions only: a slow blink, a small exhale, a slight nod. He is never surprised and never rushed.</dd></dl>
+
+<div class="pw"><pre>ARAI 1/6 · FRONT PORTRAIT, NO HELMET (generate first)
+Photorealistic studio portrait of a Japanese man in his late 40s, short black hair greying at the temples, clean-shaven, thin dark-rimmed rectangular glasses, calm attentive expression, faint smile lines, natural skin texture and pores. Light-grey zip-up work jacket, plain white armband on the left upper arm. Looking straight into the camera, head and shoulders, neutral mid-grey seamless background, soft even key light with gentle fill, 85mm, f/4, sharp focus on the eyes.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>ARAI 2/6 · FRONT, HELMET ON (attach Arai 1/6 + @Badge)
+The same man as the reference image, now wearing a white construction helmet with a black chin strap fastened, light-grey zip-up work jacket, plain white armband, and a small sleek black smart badge exactly like @Badge clipped at chest height with a soft cyan light. Looking straight into the camera, head and chest, neutral mid-grey seamless background, soft even studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>ARAI 3/6 · THREE-QUARTER LEFT (attach Arai 1/6 + @Badge)
+The same man as the reference image, white construction helmet with chin strap, light-grey work jacket, badge like @Badge at chest height. Three-quarter view turned to his left, eyes slightly off camera, calm and focused, neutral mid-grey background, soft studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>ARAI 4/6 · PROFILE RIGHT (attach Arai 1/6)
+The same man as the reference image in white construction helmet and light-grey work jacket, seen in clean right profile, glasses visible, neutral expression, neutral mid-grey background, soft studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>ARAI 5/6 · FULL BODY (attach Arai 1/6 + @Badge) · 9:16
+Full-body photo of the same man as the reference image standing upright and relaxed: white construction helmet with chin strap, light-grey zip-up work jacket, plain white armband on the left arm, badge like @Badge at chest height, navy work trousers, black safety shoes, holding a slim rugged tablet at his side. Neutral mid-grey seamless background, soft even studio light, 50mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>ARAI 6/6 · ON SITE, NATURAL LIGHT (attach Arai 1/6 + @Badge)
+Cinematic photo of the same man as the reference image on an open concrete floor of a Tokyo high-rise under construction at early morning: white helmet, light-grey work jacket, badge like @Badge glowing soft cyan, looking down at a slim rugged tablet whose bright white screen lights his face. Columns and city behind softly out of focus, natural morning light, 50mm, ARRI Alexa look.</pre><button class="copy" type="button">Copy</button></div>
+<p class="how"><b>Keep:</b> 5–6 images in which the face, glasses and hairline match. Reject any with a different face shape or with a logo on the helmet.</p></div>
+
+<div class="card"><header><span class="sid">MORI</span><h4>Foreman (職長): quick, precise, Arai's hands on the floor</h4><span class="chip ref">@Mori</span></header>
+<dl><dt>Look</dt><dd>Japanese woman, about 30, black hair tied back in a low ponytail under a yellow helmet with a black chin strap, sharp focused eyes. Full-body safety harness over a navy work jacket, grey tobi (wide-leg) work trousers, black safety boots, a two-way radio on the chest strap, @Badge on the harness strap, smartphone in a rugged case.</dd>
+<dt>Acting</dt><dd>Decisive, with quick nods and clear hand signals. She leads the morning assembly.</dd></dl>
+
+<div class="pw"><pre>MORI 1/6 · FRONT PORTRAIT, NO HELMET (generate first)
+Photorealistic studio portrait of a Japanese woman around 30, black hair tied back in a low ponytail, sharp focused eyes, light natural makeup, natural skin texture, confident composed expression. Navy work jacket with the straps of a safety harness over the shoulders. Looking straight into the camera, head and shoulders, neutral mid-grey seamless background, soft even key light, 85mm, f/4.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>MORI 2/6 · FRONT, HELMET ON (attach Mori 1/6 + @Badge)
+The same woman as the reference image, now wearing a yellow construction helmet with a black chin strap fastened, full-body safety harness over a navy work jacket, a two-way radio clipped to the chest strap, and a small sleek black smart badge exactly like @Badge on the harness strap with a soft cyan light. Looking straight into the camera, head and chest, neutral mid-grey background, soft studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>MORI 3/6 · THREE-QUARTER RIGHT (attach Mori 1/6 + @Badge)
+The same woman as the reference image in yellow helmet, harness, navy jacket, radio and badge like @Badge. Three-quarter view turned to her right, mid-sentence as if giving an instruction, neutral mid-grey background, soft studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>MORI 4/6 · PROFILE LEFT (attach Mori 1/6)
+The same woman as the reference image in yellow construction helmet and harness, clean left profile, ponytail visible below the helmet, neutral expression, neutral mid-grey background, soft studio light, 85mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>MORI 5/6 · FULL BODY (attach Mori 1/6 + @Badge) · 9:16
+Full-body photo of the same woman as the reference image standing upright: yellow construction helmet with chin strap, full-body safety harness over a navy work jacket, two-way radio on the chest strap, badge like @Badge, grey wide-leg tobi work trousers, black safety boots, a smartphone in a rugged case in one hand. Neutral mid-grey seamless background, soft even studio light, 50mm.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>MORI 6/6 · ON SITE, LEADING THE ASSEMBLY (attach Mori 1/6 + @Badge)
+Cinematic photo of the same woman as the reference image standing in front of rows of construction workers at a morning assembly on a Tokyo site, arm raised as she leads a stretch, yellow helmet, harness, radio, badge like @Badge glowing soft cyan. Low golden morning sun, long shadows, white tower cranes behind, 50mm, ARRI Alexa look.</pre><button class="copy" type="button">Copy</button></div>
+<p class="how"><b>Keep:</b> 5–6 consistent images. The yellow helmet and the radio on the chest strap are her identifiers. Keep them in every image.</p></div>
+
+<!-- STEP 2 -->
+<h3 id="b1-s2"><span class="n">STEP 2</span>Keyframes for Block 1</h3>
+<p>Generate the stills in this order, all at 16:9 with the negative prompt. KF-04 and KF-06 become reference images for the whole film, so approve them carefully.</p>
+<ol class="order">
+  <li>KF-01 Tokyo establisher</li>
+  <li>KF-02 The still point (with @Arai)</li>
+  <li>KF-03 Morning assembly (with @Mori)</li>
+  <li>KF-04 SENSE glow: an edit of KF-03 → saved as <b>@Glow</b></li>
+  <li>KF-07 Badge macro (with @Badge)</li>
+  <li>KF-05 The tower comes alive → saved as <b>@Tower</b></li>
+  <li>KF-06 Floating light-mode panel (with @Arai) → saved as <b>@Panel</b>, and used as the end frame of the block</li>
+</ol>
+
+<div class="card"><header><span class="sid">KF-01</span><h4>Tokyo, 05:50</h4><span class="chip">Start frame · Shot 1.1</span></header>
+<div class="pw"><pre>Photorealistic ultra-detailed cinematic still, ARRI Alexa 65 anamorphic look, 16:9. Pre-dawn blue hour over central Tokyo seen from a high drone: in the middle distance a 30-storey concrete tower under construction with three white tower cranes and red aviation lights, site floodlights switched on only on the lowest floors, white perimeter panels and green scaffold mesh sheets. Tokyo Skytree softly lit on the distant skyline, thin mist over the city, deep blue sky with a faint warm glow on the horizon. 24mm, deep focus, calm and majestic.</pre><button class="copy" type="button">Copy</button></div></div>
+
+<div class="card"><header><span class="sid">KF-02</span><h4>The still point</h4><span class="chip">Shots 1.2–1.3</span><span class="chip ref">@Arai</span></header>
+<div class="pw"><pre>Photorealistic ultra-detailed cinematic still, ARRI Alexa 65 anamorphic look, 16:9. A locked-off symmetrical wide view of an open concrete floor (Level 7) of a Tokyo high-rise under construction, a grid of columns framing the city beyond, early morning light raking across the slab. @Arai stands perfectly still and sharp in the exact centre, tablet at his side, while workers, a scissor lift and pallets of drywall around him are streaked with long-exposure motion blur. On the column to his right, a printed paper construction schedule is taped at eye level, its corner lifting in a draft. 24mm, eye level.</pre><button class="copy" type="button">Copy</button></div></div>
+
+<div class="card"><header><span class="sid">KF-03</span><h4>Morning assembly (chōrei)</h4><span class="chip">Shot 1.4 start</span><span class="chip ref">@Mori</span></header>
+<div class="pw"><pre>Photorealistic ultra-detailed cinematic still, ARRI Alexa 65 anamorphic look, 16:9. A morning assembly at the base of a Tokyo high-rise under construction: forty Japanese construction workers in neat rows doing synchronized stretches with arms raised, white and yellow helmets, full-body harnesses, tobi trousers, each with a small sleek black badge on the harness strap. @Mori stands in front facing them, leading the stretch. Low golden sun, long shadows across clean ground, white tower cranes, a concrete pump and the material hoist on the tower behind them. 35mm, slightly low angle.</pre><button class="copy" type="button">Copy</button></div></div>
+
+<div class="card"><header><span class="sid">KF-04</span><h4>SENSE: the glow master</h4><span class="chip wow">Wow</span><span class="chip ref">→ @Glow</span></header>
+<div class="pw"><pre>Edit the attached image (KF-03), keeping the people, poses, light and composition exactly the same. Add a luminous cyan connectivity layer: every worker's chest badge now glows soft cyan, gentle overlapping cyan pulse rings spread across the crowd like ripples on still water, fine glowing cyan contour lines trace the tower cranes, the concrete pump and the material hoist, and thin cyan lines outline three work zones on the ground. Soft bloom, depth-correct, faint cyan reflections on helmets. Elegant and sparse, high-end technology product film. No text, no HUD.</pre><button class="copy" type="button">Copy</button></div>
+<p class="how"><b>Approve the glow level here.</b> This frame sets the cyan intensity for all 3 minutes. If it reads as sci-fi, reduce it ("subtler, thinner lines"). If it's barely visible, increase it.</p></div>
+
+<div class="card"><header><span class="sid">KF-07</span><h4>The badge macro</h4><span class="chip ours">Ours</span><span class="chip ref">@Badge</span></header>
+<div class="pw"><pre>Photorealistic extreme macro, 16:9: a small sleek black smart badge exactly like @Badge clipped to the chest strap of a worker's full-body harness, a soft cyan light glowing along its edge, a single cyan pulse ring just leaving it. Very shallow depth of field, the morning assembly and golden sun softly blurred behind, fine fabric and webbing texture. 100mm macro, ARRI Alexa look.</pre><button class="copy" type="button">Copy</button></div>
+<p class="how">If the generated badge doesn't match the real one closely, comp the real badge photo over this plate in post. It's on screen for 1 second.</p></div>
+
+<div class="card"><header><span class="sid">KF-05</span><h4>The tower comes alive</h4><span class="chip wow">Wow</span><span class="chip ref">→ @Tower</span></header>
+<div class="pw"><pre>Photorealistic ultra-detailed cinematic still, ARRI Alexa 65 anamorphic look, 16:9, in the cyan glow style of @Glow. Dawn, drone view at mid-height of a 30-storey concrete tower under construction in Tokyo: thousands of small cyan light particles stream up the facade, and fine glowing cyan lines trace the columns, slab edges and hoist shaft of the lower two-thirds of the building; the upper floors are still unlit, waiting. White tower cranes, green scaffold mesh, Tokyo skyline and a soft sunrise behind, a glass-walled site office visible at the base. 24mm.</pre><button class="copy" type="button">Copy</button></div></div>
+
+<div class="card"><header><span class="sid">KF-06</span><h4>The live site map: panel master and block end frame</h4><span class="chip ref">→ @Panel</span><span class="chip">B1-END</span></header>
+<div class="pw"><pre>Photorealistic ultra-detailed cinematic still, ARRI Alexa 65 anamorphic look, 16:9. Inside a glass-walled site office at dawn, @Arai holds a slim rugged tablet; from its bright white screen a large frosted-glass light-mode panel has unfolded into the air above it: a bright white surface with soft shadows and a fine glowing cyan edge, a blank pale-grey content area with four small dark tracking dots at its corners, no text. Cool white light on his face and glasses. Through the window behind, the tower outlined in glowing cyan lines in the style of @Glow. Over-the-shoulder, 50mm, the panel centred in frame.</pre><button class="copy" type="button">Copy</button></div>
+<p class="how">This frame does three jobs: the look of every floating panel in the film (@Panel), the end frame of Block 1, and the frame the real Live Site Map recording is tracked onto.</p></div>
+
+<!-- STEP 3 -->
+<h3 id="b1-s3"><span class="n">STEP 3</span>The 30-second Block 1 prompt</h3>
+<p><b>Attach:</b> @Arai, @Mori, @Badge, @Glow (KF-04), @Panel (KF-06). <b>Start frame:</b> KF-01. <b>End frame:</b> KF-06, if your model supports one. 16:9, 24 fps, negative prompt in its own field.</p>
+<div class="pw main"><pre>A single continuous 30-second cinematic product film in six connected shots, each flowing into the next through a camera move or a match cut, never a plain cut. Photorealistic, ultra-detailed, ARRI Alexa 65 large-format anamorphic look, 24 fps, natural skin and fabric texture, realistic physics. An immaculate near-future high-rise construction site in central Tokyo: a 30-storey concrete tower, white tower cranes, green scaffold mesh, white perimeter panels, a glass-walled site office. Japanese workers in authentic workwear, each with a small sleek black smart badge like @Badge on the harness strap with a soft cyan light. Lead character: site manager @Arai (white helmet, light-grey work jacket, thin dark glasses), calm and composed, the same face in every shot. Foreman @Mori (yellow helmet, harness, radio). Cyan light in the exact style and intensity of @Glow: elegant, depth-correct, soft bloom, never a HUD.
+
+[0–6s] Pre-dawn blue hour. One continuous drone glide from high over the Tokyo skyline toward the tower under construction, its cranes' red aviation lights blinking and site floodlights switching on floor by floor as the camera approaches. Tokyo Skytree softly lit in the distance, thin mist. The glide slows over the open top floor and finds a lone figure in a white helmet at the slab edge, seen from behind: @Arai.
+
+[6–12s] Re-framed on the open concrete floor of Level 7, locked-off and symmetrical: @Arai stands perfectly still in the centre in real time while everything around him races in time-lapse from morning to evening. Crews arrive and relocate, a scissor lift crosses, drywall pallets appear and vanish, barrier tape goes up and comes down, sunlight sweeps across the slab. A printed paper schedule taped to the column beside him flutters but never changes. Then the light snaps back to early morning and everything freezes.
+
+[12–15s] Slow push-in to a close-up of @Arai on the frozen floor. He glances at the paper schedule, then down through the open slab edge toward the ground far below, where workers are gathering in rows. A quiet exhale. The camera tilts down past the slab edge, following his gaze, and drops vertically down the facade.
+
+[15–21s] The drop lands at ground level at 06:30: forty workers in neat rows doing synchronized morning stretches, @Mori leading at the front. A speed ramp slows them to near stillness, arms raised. One by one each worker's badge lights soft cyan, and gentle cyan pulse rings expand from every badge across the crowd like ripples on still water. Glowing cyan contour lines trace the tower cranes, the concrete pump and the material hoist; thin lines draw the work zones on the ground. The camera pushes into an extreme macro of one badge exactly like @Badge as it pulses cyan once.
+
+[21–26s] The pulse breaks into small particles of light and the camera rises fast with thousands of them streaming up the tower facade. As they climb, glowing cyan lines trace the building's columns, slabs and hoist shaft floor by floor, until the whole real tower is wrapped in its own luminous outline against the sunrise. Near the top the streams arc away and dive down toward the glass site office at the base.
+
+[26–30s] The streams pass through the office glass and land on the tablet held by @Arai. Its screen lights bright white and a large frosted light-mode glass panel like @Panel unfolds smoothly into the air above it, with a fine cyan edge and a blank pale content area, no text. Cool white light on his face. The camera pushes slowly past his shoulder toward the centre of the floating panel.
+
+Sound: one continuous cinematic score beginning with low strings and a taiko heartbeat, city hum and a distant crane horn; the morning calisthenics piano and counting "ichi, ni, san, shi" melt into a soft rising shimmer at 15s, with a clean tick for each pulse ring; the music lifts as the tower lights up and settles into an expectant held chord at the panel.</pre><button class="copy" type="button">Copy</button></div>
+
+<h4 style="margin-top:22px">If your model caps at 10–12 s: the same block in 3 parts</h4>
+<p>Attach the same references to every part. Use the last frame of each part as the start frame of the next.</p>
+<div class="pw"><pre>BLOCK 1 · PART A (0–12s) · start frame KF-01 · end frame KF-02
+Photorealistic ultra-detailed cinematic film, ARRI Alexa 65 anamorphic, 24 fps. Near-future Tokyo high-rise construction site, white tower cranes, green scaffold mesh. Site manager @Arai (white helmet, light-grey jacket, thin dark glasses), the same face throughout. Shots flow through camera moves, never plain cuts. [0–6s] Pre-dawn blue hour: one continuous drone glide from high over the Tokyo skyline to a 30-storey tower under construction, red aviation lights blinking, floodlights switching on floor by floor, Skytree in the distance, thin mist; it slows over the open top floor and finds @Arai at the slab edge from behind. [6–12s] Re-framed on the open Level 7 floor, locked-off and symmetrical: @Arai stands perfectly still in the centre in real time while crews, a scissor lift, pallets and barrier tape race around him in time-lapse from morning to evening, sunlight sweeping the slab; a paper schedule taped to the column beside him flutters but never changes; the light snaps back to morning and everything freezes.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>BLOCK 1 · PART B (12–21s) · start = last frame of Part A · attach @Glow
+Same style, character and references. Workers wear small sleek black smart badges like @Badge. [0–3s] Slow push-in to a close-up of @Arai on the frozen floor; he glances at the paper schedule, then down through the slab edge to workers gathering in rows far below; a quiet exhale; the camera tilts down past the edge and drops vertically down the facade. [3–9s] The drop lands on a morning assembly of forty workers stretching in rows, @Mori (yellow helmet, harness, radio) leading at the front; a speed ramp slows them to near stillness, arms raised; one by one every badge lights soft cyan and gentle cyan pulse rings ripple across the crowd like water; glowing cyan outlines trace the cranes, concrete pump and material hoist, thin lines mark work zones on the ground, exactly the style and intensity of @Glow; the camera pushes into an extreme macro of one badge exactly like @Badge pulsing cyan once.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>BLOCK 1 · PART C (21–30s) · start = last frame of Part B · end frame KF-06 · attach @Panel
+Same style, character and references. [0–5s] The badge pulse breaks into light particles; the camera rises fast with thousands of them streaming up the tower facade, and glowing cyan lines in the style of @Glow trace the columns, slabs and hoist shaft floor by floor until the whole real tower is wrapped in its own luminous outline against the sunrise; near the top the streams arc and dive down to the glass site office at the base. [5–9s] The streams pass through the office glass onto the tablet held by @Arai; the screen lights bright white and a large frosted light-mode glass panel like @Panel unfolds into the air above it, with a fine cyan edge and a blank pale content area, no text; cool white light on his face; the camera pushes slowly past his shoulder toward the centre of the panel.</pre><button class="copy" type="button">Copy</button></div>
+
+<!-- STEP 4 -->
+<h3 id="b1-s4"><span class="n">STEP 4</span>Post for Block 1</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Time</th><th>What</th><th>Type</th></tr></thead>
+<tbody>
+<tr><td class="m">0:01–0:05</td><td>Small time stamp, lower left: <b>05:50 · TOKYO</b></td><td>GFX</td></tr>
+<tr><td class="m">0:15–0:17</td><td>Small time stamp: <b>06:30</b></td><td>GFX</td></tr>
+<tr><td class="m">0:17–0:20</td><td>The word <b>SENSE</b> in fine cyan, part of the light layer, low in frame. The pipeline mark appears lower left with its first node lit.</td><td>GFX</td></tr>
+<tr><td class="m">0:20–0:21</td><td>Real Trusstor badge comped over the macro if the generated one doesn't match</td><td><span class="chip ours">Ours</span></td></tr>
+<tr><td class="m">0:27–0:30</td><td>Real <b>Live Site Map (RTLS)</b> recording, light mode, tracked onto the floating panel: the tower with workers and equipment as moving dots. End on the tower icon, centred. <span class="chip verify">Verify</span> the real screen name.</td><td><span class="chip ours">Ours</span></td></tr>
+</tbody></table></div>
+<div class="card vo"><header><span class="sid">VO</span><h4>Narration, Block 1</h4></header>
+<p><span class="t">0:02</span>On a construction site, nothing stands still.</p>
+<p><span class="t">0:07</span>People, equipment and priorities change every hour.</p>
+<p><span class="t">0:12</span>So how does anyone keep up with the reality on the ground?</p>
+<p><span class="t">0:17</span>SuperApp senses the site as it moves: every crew, every machine, every zone.</p>
+<p><span class="t">0:25</span>And connects it to the plans, the models and the schedule.</p>
+<p class="how">The last line finishes at about 0:29 and runs into Block 2's opening shot.</p></div>
+
+<!-- STEP 5 -->
+<h3 id="b1-s5"><span class="n">STEP 5</span>Check, then hand off</h3>
+<ul class="check">
+  <li>Arai's face, glasses and white armband are the same in 1.1, 1.2, 1.3 and 1.6.</li>
+  <li>Mori is recognizable at the front of the assembly (yellow helmet, radio).</li>
+  <li>The time-lapse in 1.2 reads clearly: Arai is still, the world moves. If the model can't hold him still, generate an Arai plate and an empty-floor time-lapse separately and composite them.</li>
+  <li>The cyan level in 1.4 and 1.5 matches @Glow.</li>
+  <li>No cut feels like a jump: each shot ends in a camera move that the next one continues.</li>
+  <li>The floating panel is blank, light mode, with four visible tracking dots.</li>
+</ul>
+<div class="handoff"><b>Hand-off to Block 2</b>Export the last frame of Block 1, the floating panel centred with the camera pushing into it, as <b>B1-END</b>. Block 2 opens from that frame by pushing through the panel's tower into the Living Tower.</div>
+<div class="note">When Block 1 is done, ask for Block 2. This guide will be updated in place with the Living Tower (@Twin), the Level 7 keyframes and the next 30-second prompt.</div>
+</main>
+</div>
+
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.copy'); if(!b) return;
+  var pre=b.parentElement.querySelector('pre'); if(!pre) return;
+  function sel(){try{var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(x){}b.textContent='Selected';}
+  try{navigator.clipboard.writeText(pre.textContent.trim()).then(function(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok');},1400);},sel);}catch(err){sel();}
+});
+</script>
