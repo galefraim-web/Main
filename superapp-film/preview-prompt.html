@@ -1,0 +1,90 @@
+<title>SuperApp Preview Prompt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column, one big copyable prompt; references and split version below it. */
+:root{--bg:#F1F4F4;--paper:#FFFFFF;--fg:#121C20;--muted:#56656B;--line:#D3DCDE;--cyan:#0A7C93;--cyan-soft:#DCF0F4;--code:#F6F8F8;
+--body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D1417;--paper:#141D21;--fg:#E4EDEF;--muted:#93A4AA;--line:#28363B;--cyan:#4CCBE3;--cyan-soft:#112F37;--code:#10181B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D1417;--paper:#141D21;--fg:#E4EDEF;--muted:#93A4AA;--line:#28363B;--cyan:#4CCBE3;--cyan-soft:#112F37;--code:#10181B;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 72px}
+h1{font-size:26px;margin:0 0 6px;text-wrap:balance}
+h2{font-size:17px;margin:32px 0 8px}
+p{margin:0 0 10px;max-width:72ch;color:var(--muted)}
+.pw{position:relative;margin:10px 0}
+pre{font-family:var(--mono);font-size:13px;line-height:1.65;background:var(--code);border:1px solid var(--line);padding:16px 84px 16px 16px;margin:0;white-space:pre-wrap;word-wrap:break-word;color:var(--fg)}
+.main pre{border-color:var(--cyan);border-width:1.5px}
+.copy{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer;border-radius:3px}
+.copy:hover{border-color:var(--fg)}
+.copy:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.copy.ok{background:var(--cyan);color:var(--paper);border-color:var(--cyan)}
+ol{padding-left:20px;margin:0 0 10px;max-width:74ch}
+li{margin:3px 0}
+code{font-family:var(--mono);font-size:13px;background:var(--cyan-soft);padding:1px 5px}
+</style>
+
+<div class="wrap">
+<h1>SuperApp preview: Higgsfield prompt</h1>
+<p>A 30-second flow test. Attach the reference images listed below, paste the prompt, put the negative prompt in its own field, and generate at 1080p, 16:9, 24 fps.</p>
+
+<h2>Reference images to attach</h2>
+<ol>
+  <li><code>@Arai</code>: the Arai Soul ID (or the K01 character sheet)</li>
+  <li><code>@Badge</code>: a photo of the real Trusstor smart badge</li>
+  <li><code>@Glow</code>: K06, the glowing morning assembly (sets the cyan level)</li>
+  <li><code>@Twin</code>: K16, the Living Tower</li>
+  <li><code>@Panel</code>: K17, the floating light-mode panel</li>
+  <li><code>@Dusk</code>: K14, the 「ヨシ!」 dusk frame (start or end frame if your model supports one)</li>
+</ol>
+<p>If your model names references differently (Image 1, Image 2…), swap the tags. If it only takes one image, use <code>@Arai</code> as the character reference.</p>
+
+<h2>Prompt (full 30 s, multi-shot)</h2>
+<div class="pw main"><pre>A single continuous 30-second cinematic product film in 11 connected shots, each flowing into the next through a camera move or a match cut, never a plain cut. Photorealistic, ultra-detailed, ARRI Alexa large-format anamorphic look, 24 fps. A near-future Tokyo high-rise construction site: immaculate, orderly, white tower cranes, green scaffold mesh. Japanese workers in authentic workwear, each wearing a small smart badge like @Badge that glows soft cyan. Throughout, elegant glowing cyan connectivity lines with soft bloom and travelling light particles, depth-correct, premium technology look in the style of @Glow. Lead character: the site manager @Arai (white helmet, light-grey work jacket, thin dark glasses), calm and composed, the same face in every shot.
+
+[0–3.5s] Locked-off symmetrical wide shot of an open concrete floor. @Arai stands perfectly still in the centre in real time while everything around him races in time-lapse: crews relocate, a scissor lift crosses, pallets appear and vanish, sunlight sweeps from morning to evening. The light snaps back to dawn and everything freezes.
+
+[3.5–6s] Match cut down to the ground: a morning assembly of forty workers in rows, frozen mid-stretch with arms raised. Every badge lights cyan and gentle cyan pulse rings ripple across the crowd like water; glowing cyan outlines trace the tower cranes and the material hoist. Slow push-in.
+
+[6–7s] Push into an extreme macro of one badge on a harness strap, exactly like @Badge, pulsing cyan once.
+
+[7–9.5s] The pulse breaks into light particles; the camera rises fast with thousands of them up the tower facade as glowing cyan lines trace every column and slab until the whole tower is wrapped in its own luminous outline, then the particles dive toward a glass site office.
+
+[9.5–12.5s] Inside the glass site office at dawn, @Arai holds a tablet as the particles land on it; a large frosted white light-mode glass panel like @Panel unfolds into the air above it, with a fine cyan edge and a blank pale content area. Cool white light on his face. The camera pushes through the panel.
+
+[12.5–15s] Out to the exterior: a high external scaffold with green mesh sheets billowing in strong wind, workers clipped to the rail. The wind itself becomes visible as translucent cyan streamlines swirling around the tower corner; one streamline flares amber. Drone orbit.
+
+[15–17s] The streamlines sweep down into a top-down view of a concrete slab: time accelerates and each worker leaves a glowing cyan light trail, drawing looping paths and a dense bright knot at the closed hoist doors where pallets wait. The knot turns amber.
+
+[17–21s] Fast pull-back into the digital twin @Twin: the tower as glass and cyan linework floating in navy-black space at night, six amber glowing pins on different floors. Cyan threads connect the pins one by one and converge on the hoist shaft, which ignites into a single brilliant column of light running the full height of the tower.
+
+[21–23.5s] Extreme close-up: @Arai's finger hovers in front of a floating white light-mode glass panel beside the glowing shaft, pauses for one breath and taps; a cyan ripple spreads from his fingertip. Rack focus to his calm face.
+
+[23.5–26s] The ripple races into the night yard: a matte-white autonomous pallet mover with a cyan light strip glides wrapped drywall into the open hoist, whose cyan ring lights as the doors close; then a compact white layout robot draws cyan-lit lines across a clean slab. Wet concrete, moonlight, cyan reflections.
+
+[26–30s] A sunrise flare carries into dusk on the top floor: @Arai raises his arm and points firmly across the site in the Japanese pointing-and-calling gesture. The drone pulls back and rises: the tower glows in calm cyan, and cyan threads spread across the Tokyo skyline to other construction sites, which light up one by one toward Tokyo Skytree and Mt. Fuji in an orange-violet sky. In the final second the city's light contracts into a single thin cyan line on a dark frame.
+
+Sound: one continuous cinematic score: low strings and a taiko heartbeat building, silence at 17s then a rising swell, a soft tap at 22.5s then full drive, a beat of silence at 26s for a calm male voice saying "Yoshi!", then a final orchestral hit with taiko and koto.</pre><button class="copy" type="button">Copy</button></div>
+
+<h2>Negative prompt</h2>
+<div class="pw"><pre>cartoon, anime, video game look, plastic CGI, cluttered sci-fi HUD, neon cyberpunk, purple glow, plain hard cuts, slideshow transitions, distorted faces, extra fingers, changing character face, missing helmet, generated user interface, readable text, gibberish kanji, logos, watermarks, subtitles, oversaturated colors, stock footage look</pre><button class="copy" type="button">Copy</button></div>
+
+<h2>If your model caps at 10 s: the same film in 3 parts</h2>
+<p>Generate in order. Use the last frame of each part as the start frame of the next, and attach the same references each time.</p>
+<div class="pw"><pre>PART 1 (0–10s). Photorealistic ultra-detailed cinematic film, ARRI Alexa anamorphic, near-future Tokyo high-rise construction site, immaculate, white tower cranes, green scaffold mesh; workers with small smart badges like @Badge glowing soft cyan; elegant glowing cyan connectivity lines in the style of @Glow; site manager @Arai, same face throughout. Shots flow through camera moves and match cuts. [0–3.5s] Locked-off wide: @Arai stands perfectly still in the centre of an open concrete floor while crews, a scissor lift and pallets race around him in time-lapse from morning to evening; the light snaps back to dawn and freezes. [3.5–6s] Match cut down to a morning assembly of forty workers frozen mid-stretch; every badge lights cyan and pulse rings ripple across the crowd; cyan outlines trace the cranes and hoist. [6–7s] Push into a macro of one badge exactly like @Badge, pulsing cyan. [7–10s] The pulse becomes light particles; the camera rises fast with them up the facade as cyan lines wrap the whole tower floor by floor, then dives toward a glass site office.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>PART 2 (10–20s). Same style, references and character. [0–3s] Inside a glass site office at dawn, @Arai holds a tablet as cyan particles land on it; a frosted white light-mode glass panel like @Panel unfolds above it with a fine cyan edge and a blank pale content area; the camera pushes through the panel. [3–5.5s] Exterior: a high scaffold with green mesh billowing in strong wind; the wind becomes translucent cyan streamlines swirling around the tower corner, one flaring amber; drone orbit. [5.5–7.5s] The streamlines sweep down to a top-down concrete slab where accelerated time leaves glowing cyan worker trails, knotting brightly at the closed hoist doors; the knot turns amber. [7.5–10s] Fast pull-back into the digital twin @Twin: a glass-and-cyan tower in navy-black space at night with six amber pins; cyan threads join them and converge on the hoist shaft, which ignites into one brilliant column of light.</pre><button class="copy" type="button">Copy</button></div>
+<div class="pw"><pre>PART 3 (20–30s). Same style, references and character. [0–2.5s] Extreme close-up: @Arai's finger hovers in front of a floating white light-mode glass panel beside the glowing shaft, pauses and taps; a cyan ripple spreads; rack focus to his calm face. [2.5–5s] The ripple races into a wet night yard: a matte-white autonomous pallet mover with a cyan light strip carries drywall into the hoist as its cyan ring lights; then a compact white layout robot draws cyan-lit lines across a slab. [5–10s] A sunrise flare carries into dusk on the top floor: @Arai points firmly across the site in the Japanese pointing-and-calling gesture; the drone rises as cyan threads spread from the tower across the Tokyo skyline to other sites lighting up toward Skytree and Mt. Fuji in an orange-violet sky; in the last second the light contracts into one thin cyan line on a dark frame.</pre><button class="copy" type="button">Copy</button></div>
+
+<h2>Add in your editor after generating</h2>
+<p>Track the real Live Site Map recording onto the panel at 9.5–12.5 s and a real insight screen onto the panel at 21–23 s. Add the SuperApp logo on the final cyan line (29–30 s) and the narration from the preview page. Higgsfield shouldn't generate any of these.</p>
+</div>
+
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest('.copy'); if(!b) return;
+  var pre=b.parentElement.querySelector('pre'); if(!pre) return;
+  function sel(){try{var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(x){}b.textContent='Selected';}
+  try{navigator.clipboard.writeText(pre.textContent.trim()).then(function(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok');},1400);},sel);}catch(err){sel();}
+});
+</script>
